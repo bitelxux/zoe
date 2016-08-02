@@ -1,0 +1,15 @@
+01 >> root@presenter:/home/cnn/zoe# ./zoe.py --config presenter.cfg 
+02 >> Starting Zoe
+03 >> Using presenter.cfg config file
+04 >> UDP listening on port 8888
+05 >> New Peer presenter@presenter.com ('82.165.XXX.XXX', 8888)
+06 >> SqliteStorage connection created in 0.006 seconds
+07 >> TelnetConsole is at localhost:6668
+08 >> Loaded plugin sample
+09 >> RSA ok
+10 >> New Peer A ('31.4.51.161', 57438)
+11 >> Sample Plugin: New peer ('31.4.51.161', 57438) A
+12 >> New Peer B ('80.59.0.177', 10776)
+13 >> Sample Plugin: New peer ('80.59.0.177', 10776) B
+14 >> Received SEARCH from A to B
+

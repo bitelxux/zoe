@@ -1,0 +1,34 @@
+01 >> cnn@trancos ~/zoe $ ./zoe.py 
+      Starting Zoe
+02 >> Using default config.cfg
+03 >> Not valid udp_port in section General
+04 >> UDP listening on port 44821
+04 >> New Peer A ('192.168.1.4', 44821)
+06 >> SqliteStorage connection created in 0.005 seconds
+07 >> New Peer presenter ('82.165.XXX.XXX', 8888)
+08 >> TelnetConsole is at localhost:6666
+09 >> Loaded plugin sample
+10 >> RSA ok
+11 >> Starting telnet console from 127.0.0.1:36637
+12 >> Can't send to not contact or not accepted contact B
+13 >> Can't send to not contact or not accepted contact B
+14 >> Starting discover for B
+15 >> New Peer presenter@presenter.com ('82.165.XXX.XXX', 8888)
+16 >> Sample Plugin: New peer ('82.165.XXX.XXX', 8888) presenter@presenter.com
+17 >> CALL received from presenter@presenter.com for B
+18 >> Starting Puncher for B
+19 >> New Peer B ('80.59.0.177', 10776)
+20 >> Sample Plugin: New peer ('80.59.0.177', 10776) B
+21 >> Ended discover for B [Success]
+22 >> Ended Puncher for B [Success]
+23 >> Recibido ACK de B [8fc7a91012e311e39e69f04da2ff4488]
+24 >> New message from B: Contact invitation accepted !!
+25 >> Sample Plugin: New message from B : Contact invitation accepted !!
+26 >> B accepted invitation
+27 >> Recibido ACK de B [a5607b3a12e311e39e69f04da2ff4488]
+28 >> New message from B: Ya lo ví !! Gracias !!
+29 >> Sample Plugin: New message from B : Ya lo ví !! Gracias !!
+30 >> Recibido ACK de B [b66d3b1612e311e39e69f04da2ff4488]
+31 >> New message from B: Recibido. Esta respuesta tambien RSA
+32 >> Sample Plugin: New message from B : Recibido. Esta respuesta tambien RSA
+

@@ -1,0 +1,1685 @@
+Elaboración de requisitos mediante Escenarios
+=============================================
+
+Los escenarios describen situaciones del proceso del 
+negocio, tanto del proceso observable actual como del 
+proceso proyectado o futuro. En este último caso los 
+escenarios resultan ser contenedores de la mayoría de los 
+requisitos del sistema de software, pero no son los 
+requisitos propiamente dichos. 
+
+.. class:: table-cita:
+
+ "Muchas de las buenas 
+ prácticas o prácticas recomendadas en el proceso de 
+ desarrollo de software se basan en la existencia de un 
+ documento de requisitos en el que éstos se individualizan 
+ en forma precisa. En el presente artículo se presenta una 
+ estrategia para confeccionar un documento de requisitos 
+ a partir de escenarios ya construidos. La particularidad 
+ que presenta la misma es que los requisitos 
+ individualizados tienden a ser libres de conflictos y de 
+ ambigüedad a consecuencia del propio proceso de 
+ producción." [#escenarios]_
+
+.. class:: table-cita:
+
+ Las situaciones observadas en el universo de discurso 
+ (UdeD) son la base para el conocimiento del 
+ problema y las situaciones deseadas son el bosquejo para 
+ los requisitos del sistema de software. Estas situaciones 
+ pueden representarse a través de escenarios. A los 
+ escenarios que plasman las situaciones observadas, los 
+ denominamos escenarios actuales. Escenarios futuros 
+ (EF) son aquéllos que modelan las situaciones 
+ proyectadas como solución a los problemas, demandas y 
+ necesidades planteadas en el UdeD y de acuerdo a los 
+ objetivos propuestos para el sistema. Estos EF 
+ incorporan muchos de los requisitos del software en sus 
+ descripciones, especialmente aquellos requisitos de 
+ naturaleza funcional. 
+
+ Los EF son construidos desde el punto de vista del 
+ proceso del negocio, incorporando las acciones del actor 
+ “sistema de software”. Es así, que el mundo descripto por 
+ estos escenarios no es observable sino que describen la 
+ forma en que se espera que se desenvuelva el negocio 
+ cuando se disponga del sistema de software que se 
+ planifica desarrollar. No toda la información incluida en 
+ los EF está directamente relacionada con el sistema de 
+ software, por el contrario muchos de ellos describen 
+ situaciones en las que no participa el sistema de software. 
+ Estas situaciones se constituyen en una eficaz descripción 
+ del contexto en el que el sistema se habrá de desenvolver. 
+ Naturalmente al describirse situaciones en las que el 
+ sistema de software realiza acciones ya sea en forma 
+ espontánea o como respuesta a estímulos de otro actor, se 
+ está hablando en forma implícita de las funcionalidades 
+ que deberá tener este sistema de software. En otras 
+ palabras, básicamente cada aceptación de un estímulo 
+ externo y cada respuesta del sistema está asociada con un 
+ requisito que se podría enunciar como “El sistema debe 
+ aceptar tal estímulo” o “El sistema debe proveer tal 
+ respuesta”. [#escenarios]_
+ 
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+El metamodelo de escenario
+--------------------------
+
+.. class:: table-cita:
+
+ "El meta-modelo de escenario es una estructura 
+ compuesta por las siguientes entidades: título, objetivo, 
+ contexto, recursos, actores, episodios y excepciones, y el 
+ atributo restricción. Actores y recursos son dos 
+ componentes enumerativos. El título, el objetivo, el 
+ contexto y las excepciones son componentes declarativos, 
+ mientras que los episodios son un conjunto de sentencias 
+ en un lenguaje simple que dan una descripción 
+ operacional de comportamiento [...]" [#escenarios]_:
+
+**Título**: identificación del Escenario. En el caso de un subEscenario, el título es el mismo que la sentencia episodio, 
+sin las restricciones.                                                                                                       
+                                                                                                                               
+**Objetivo:** finalidad a ser alcanzada. El Escenario describe la forma de lograr el objetivo.                                 
+                                                                                                                               
+**Contexto:** compuesto por al menos uno de los siguientes ítems:                                                              
+                                                                                                                               
+       * Ubicación Geográfica: lugar físico donde se produce el Escenario.                                                     
+       * Ubicación Temporal: especificación de tiempo para el desarrollo del Escenario.                                        
+       * Precondición: estado inicial del Escenario.                                                                           
+       * Recursos: elementos físicos o información relevantes que deben estar disponibles en el Escenario.                     
+       * Actores: personas, dispositivos o estructuras organizacionales que tienen un rol en el Escenario.                     
+       * Episodios: conjunto de acciones que detallan al Escenario y proveen su comportamiento.                                
+                                                                                                                               
+|                                                                                                                              
+                                                                                                                               
+Los episodios pueden ser de tres tipos: simples, condicionales u opcionales.                                                   
+                                                                                                                               
+Los episodios simples son aquellos necesarios para concluir el desenvolvimiento del escenario.                                 
+                                                                                                                               
+Los episodios condicionales son aquellos cuya ocurrencia dependen de una condición específica. La condición puede ser          
+interna o externa al escenario. Las condiciones internas pueden deberse a ubicaciones o precondiciones alternativas            
+y a episodios previos. 
+
+Los episodios opcionales son aquellos que pueden o no ocurrir dependiendo de condiciones que no pueden  
+ser explicitadas.                                                                                                              
+                                                                                                                               
+Independientemente del tipo, un episodio puede ser expresado como una acción simple o puede ser concebido en sí                
+mismo como un escenario (denominado sub-escenario). Además, se pueden expresar episodios secuenciales y de orden indistinto.   
+                                                                                                                               
+Cada episodio puede llevar un atributo **Restricción**:                                                                        
+                                                                                                                               
+limitación o condición de calidad respecto a la realización del episodio, habitualmente estas restricciones se asocian a RNF
+(Requisitos No Funcionales). 
+
+**Excepciones**: generalmente reflejan la falta o mal funcionamiento de un recurso. Una excepción impide el cumplimiento del       
+objetivo del Escenario. Se indica el tratamiento de la excepción a través de un Escenario (denominado Escenario Excepción)     
+o de una acción simple.                                                                                                        
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenarios
+----------
+
+Podemos distinguir dos tipos de escenarios claramente diferenciados:
+
+- Escenarios de interacción, donde interviene un actor externo, sea un usuario o un proceso. Normalmente serán escenarios donde
+  dicho actor interactua mediante la consola o api de más alto nivel.
+- Escenarios de sistema, que son aquellos que de desarrollan internamente en el nodo sin que intervenga
+  , ya, ningún elemento externo.
+
+Escenarios de interacción
+*************************
+
+
+Escenario E.001. Instalación de Nodo
+.....................................
+
+Si bien se podría pensar en una aplicación WEB, ejecutada sobre un pool de servidores, ZOE está pensado para
+ejecutarse en el equipo del usuario. No obstante, se podría usar fácilmente como core para aplicaciones WEB si
+así se deseara.
+
+Lo primero que deberá hacer un usuario es hacerse con la instalación del software e instalarlo en su equipo.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.001 Instalación de nodo**                                                                    |
++==============================+============================================================================+
+|**Título**                    | Instalación del nodo                                                       |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Tener un nodo instalado en equipo propio                                   |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | NA                                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Equipo compatible                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Instalador                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Instalador                                                        |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario se hace con el software | - eMail                                                         |
+|    |                                    | - Descarga directa                                              |
+|    |                                    | - Soporte digital                                               |
+|    |                                    | - Torrent                                                       |
+|    |                                    | - Otros                                                         |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta la instalación  | Deben resolverse dependencias si es posible                     |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El instalador informa del          |                                                                 | 
+|    | resultado                          |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+
+
+.. figure:: uml/images/instalacion.png 
+        :scale: 130%
+        :alt: Fig3
+
+        Fig. :counter:`figure`: Diagrama temporal instalación de nodo
+
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.002. Arranque de nodo
+..........................................
+
+Una vez instalado el software, se procederá al arranque del mismo. Ya que no se dispone de servidor de
+registro y control de los ids de usuario, el usuario deberá proporcionar un uuid consistente en una dirección
+de correo electrónico que sea de su propiedad.
+
+Esta dirección no se registrará en ningún otro nodo.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.002 Arranque del Nodo**                                                                      |
++==============================+============================================================================+
+|**Título**                    | Arranque Nodo                                                              |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Poner en marcha el nodo por primera vez                                    |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Arranque del nodo                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo instalado                                                             |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo                                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo, Presentador                                                 |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Arranque de los hilos   | Core                                                                       |
+|    | de control              +----------------------------------------------------------------------------+
+|    |                         | Node                                                                       |
+|    |                         +----------------------------------------------------------------------------+
+|    |                         | Net                                                                        |
+|    |                         +----------------------------------------------------------------------------+
+|    |                         | Contacts                                                                   |
+|    |                         +----------------------------------------------------------------------------+
+|    |                         | Console                                                                    |
+|    |                         +----------------------------------------------------------------------------+
+|    |                         | Storage                                                                    |
+|    |                         +----------------------------------------------------------------------------+
+|    |                         | Plugins                                                                    |
++----+-------------------------+----------+-----------------------------------------------------------------+
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.003. Consola Telnet
+..........................................
+
+Dado que, en su modalidad GUIi, el la aplicación con dispondrá de entorno gráfico, toda interacción con
+el mismo deberá ser realizada, en principio, a través de su consola telnet.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.003 Consola Telnet**                                                                         |
++==============================+============================================================================+
+|**Título**                    | Consola Telnet                                                             |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Acceder a la consola telnet del nodo                                       |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | NA                                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo instalado                                                             |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario hace telnet a           | Restricción: IP:Puerto debe ser accesible desde su ubicación    |
+|    | IP:puerto de su nodo               |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El nodo responde con un mensaje    |                                                                 |
+|    | de bienvenida y muestra la ayuda   |                                                                 |
+|    | de comandos usables                |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.telnet.png 
+        :scale: 200%
+        :alt: Fig4
+
+        Fig. :counter:`figure`: Diagrama temporal de acceso a consola telnet
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.004. Funciones Consola
+..................................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.004 Funciones Consola**                                                                      |
++==============================+============================================================================+
+|**Título**                    | Funciones consola                                                          |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Funciones accesibles desde la consola telnet del nodo                      |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | NA                                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo funcionando                                                           |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.005 help                         | Muestra la ayuda de la consola                                  |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.006 login                        | Ejecuta login de usuario en la consola                          |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.007 invite                       | Invitar a un contacto                                           |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.008 accept                       | Aceptar una invitación                                          |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.009 show contacts                | Muestra contactos                                               |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.012 send                         | Enviar mensaje                                                  |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.013 send crypted                 | Enviar mensaje encriptado                                       |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.014 history                      | Obtiene histórico de mensajes                                   |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.015 msgdel                       | Elimina mensaje                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.016 python                       | Acceso a la consola python                                      | 
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.017 quit                         | Salir de la consola                                             |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | E.018 stop                         | Detener el nodo                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.005. Help
+....................................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.005 Help**                                                                                   |
++==============================+============================================================================+
+|**Título**                    | Help                                                                       |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Mostrar ayuda sobre los comandos disponibles en la consola                 |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Cliente telnet conectado                                                   |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo funcionando                                                           |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario escribe "help"          | La consola muestra la lista de comandos disponibles             |
+|    |                                    | e indicaciones sobre su itilización                             |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.help.png 
+        :scale: 250%
+        :alt: Fig5
+
+        Fig. :counter:`figure`: Diagrama temporal de comando help
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.006. Login
+...........................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.006 Login**                                                                                  |
++==============================+============================================================================+
+|**Título**                    | Login                                                                      |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Autentificar usuario en la consola                                         |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Consola telnet                                                             |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo jecutando                                                             |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta el comando      | RNF. password por defecto                                       |
+|    | login                              |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | Si es correcto                     | Mensaje OK, El usuario puedo utilizar todas las funciones       |
+|    |                                    | de la consola E.004                                             |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | Si no es correcto                  | Mensaje Error. Se muestra ayuda de nuevo                        |
++----+------------------------------------+-----------------------------------------------------------------+
+|    |                                    | RNF. Aún no logado, el nodo ejecuta toda su lógica interna      |
+|    |                                    | enviando y recibiendo mensajes pendientes                       |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.login.png 
+        :scale: 250%
+        :alt: Fig6
+
+        Fig. :counter:`figure`: Diagrama temporal de comando login
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.007. Invite
+.........................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.007 Invite**                                                                                 |
++==============================+============================================================================+
+|**Título**                    | Invite                                                                     |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Invitar a un usuario a ser contacto                                        |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo activado                                                              |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta el comando      | RNF. Se ejecuta el escenario interno invitación de contacto     |
+|    | invite con email de contacto       | E.024                                                           |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | Si el contacto acepta              | Se registra el remoto como contacto                             |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | Si el contacto no hace nada        | La invitación sigue como pendiente                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | Si el contacto rechaza             | La invitación sigue como pendiente                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    |                                    | RNF. Una invitación queda como pendiente hasta que:             |
+|    |                                    |                                                                 |
+|    |                                    |  - El remoto la acepta                                          |
+|    |                                    |  - El usuario la cancela                                        |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.invite.png 
+        :scale: 200%
+        :alt: Fig7
+
+        Fig. :counter:`figure`: Diagrama temporal de comando invite
+
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.008. Accept
+........................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.008 Accept**                                                                                 |
++==============================+============================================================================+
+|**Título**                    | Accept                                                                     |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Aceptar una invitación de contacto                                         |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Invitación recibida                                                        |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario obtiene la invitación   |                                                                 |
+|    | pendiente                          |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta accept          | Ambos usuarios son contactos                                    |
+|    | para la invitación pendiente       |                                                                 |
+|    |                                    | - RNF. Se pueden aceptar varias invicationes a la vez           |
+|    |                                    | - RNF. Se ejecuta internamente E.024 Aceptación de contacto     |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | Si el contacto no hace nada        | No se hace nada. La invitación sigue como pendiente             |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | Si el contacto rechaza             | La invitación desaparece como pendiente                         |
+|    |                                    | RNF. No se envía nada al remoto                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+|    |                                    | RNF. Una invitación recibida queda como pendiente hasta que:    |
+|    |                                    |                                                                 |
+|    |                                    |  - Se acepta                                                    |
+|    |                                    |  - Se elimina                                                   |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.accept.png 
+        :scale: 180%
+        :alt: Fig8
+
+        Fig. :counter:`figure`: Diagrama temporal de comando accept
+
+
+Escenario E.009. Show Contacts
+...............................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.009 Show Contacts**                                                                          |
++==============================+============================================================================+
+|**Título**                    | Show contacts                                                              |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Muestra información de contactos                                           |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | NA                                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario solicita información    | El sistema retorna la información solictada o                   |
+|    | de contactos                       | mensaje de error                                                |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.show.contacts.png 
+        :scale: 250%
+        :alt: Fig8.a
+
+        Fig. :counter:`figure`: Diagrama temporal de show contacts info
+
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+
+Escenario E.012. Send
+.......................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.012 Send**                                                                                   |
++==============================+============================================================================+
+|**Título**                    | Send                                                                       |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Enviar un mensaje de usuario                                               |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Contacto aceptado                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta send            | - RNF. Se encola el mensaje a enviar                            |
+|    | a un contacto                      | - Condición: El destino debe ser contacto aceptado              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El sistema notifica resultado      | - RNF. Resultado de operación                                   | 
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.send.png 
+        :scale: 250%
+        :alt: Fig11
+
+        Fig. :counter:`figure`: Diagrama temporal de comando send
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.013. Send Crypted
+.............................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.013 Send Crypted**                                                                           |
++==============================+============================================================================+
+|**Título**                    | Send Crypted                                                               |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Enviar un mensaje encriptado                                               |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Contacto aceptado                                                          |
+|    |                         | Clave publica de contacto                                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta send encriptado |                                                                 |
+|    | a un contacto                      | - Condición: el destino debe ser contacto aceptado              |
+|    |                                    | - Se ecripta el mensaje con la clave publica del contacto       |
+|    |                                    | - Se firma el mensaje con la clave privada del sender           |
+|    |                                    | - RNF. A nivel interno no hay ninguna diferencia en enviar      |
+|    |                                    |   un mensaje encriptado o no. Será internamente mediante        |
+|    |                                    |   un flag donde se aplicará la encriptación.                    |
+|    |                                    | - RNF El usuario que envía debe tener la clave pública          |
+|    |                                    |   del destinatario.                                             |
+|    |                                    | - RNF El destinatario debe tener la clave pública del           |
+|    |                                    |   que envía.                                                    |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El sistema notifica resultado      | - RNF. Resultado de operación                                   | 
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.send.crypted.png 
+        :scale: 250%
+        :alt: Fig11.a
+
+        Fig. :counter:`figure`: Diagrama temporal de comando send crypted
+
+Escenario E.014. History
+..........................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.014 History**                                                                                |
++==============================+============================================================================+
+|**Título**                    | History                                                                    |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Obtiene histórico de mensajes                                              |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | N/A                                                                        |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta history         |                                                                 | 
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El sistema retorna resultado       |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.history.png 
+        :scale: 250%
+        :alt: Fig12
+
+        Fig. :counter:`figure`: Diagrama temporal de comando history
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.015. msgdel
+.........................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.015 msgdel**                                                                                 |
++==============================+============================================================================+
+|**Título**                    | msgdel                                                                     |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Eliminar un mensaje                                                        |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Mensaje recibido                                                           |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta msgdel          |                                                                 |
+|    | y el id de mensaje                 |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El sistema retorna resultado       |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.msgdel.png 
+        :scale: 250%
+        :alt: Fig13
+
+        Fig. :counter:`figure`: Diagrama temporal de comando msgdel
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.016. python
+........................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.016 python**                                                                                 |
++==============================+============================================================================+
+|**Título**                    | python                                                                     |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Dar acceso a la consola de python en el espacio de ejecución               |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | NA                                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta python          |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El sistema retorna prompt de python| RNF. controlar modulos potencialmente dañiños                   |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.python.png 
+        :scale: 250%
+        :alt: Fig14
+
+        Fig. :counter:`figure`: Diagrama temporal de comando python
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.017. quit
+......................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.017 quit**                                                                                   |
++==============================+============================================================================+
+|**Título**                    | quit                                                                       |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Abandonar el entorno actual                                                |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | NA                                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta quit            |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | Si se está en consola python       | Se retorna a consola comandos                                   |
+|    | Si se está en consola comandos     | Se abandona consola telnet                                      |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.quit.png 
+        :scale: 250%
+        :alt: Fig18
+
+        Fig. :counter:`figure`: Diagrama temporal de comando quit
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.018. stop
+.......................
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.018 stop**                                                                                   |
++==============================+============================================================================+
+|**Título**                    | stop                                                                       |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Detiene el nodo                                                            |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo ejecutandose                                                          |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | NA                                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo, cliente telnet                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Usuario, Nodo                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | El usuario ejecuta stop            |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+|    | Tras confirmación, el nodo se      |                                                                 |
+|    | detiene                            |                                                                 |
++----+------------------------------------+-----------------------------------------------------------------+
+
+.. figure:: uml/images/consola.stop.png 
+        :scale: 250%
+        :alt: Fig16
+
+        Fig. :counter:`figure`: Diagrama temporal de comando stop
+
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+
+Escenarios de Sistema
+**********************
+
+Escenario E.019. Arranque de Nodo
+..................................
+
+Un nodo, al arrancar, se publicará automáticamente en sus Presentadores ( nodos "fijos" ). 
+En dicha publicación el nodo envía periódicamente información sobre
+su uuid ( hash de la dirección de correo ) e IP:puerto locales. La IP y puerto que expone a internet la
+obtiene el propio Presentador a partir del datagrama recibido.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.019 Arranque de nodo**                                                                       |
++==============================+============================================================================+
+|**Título**                    | Arranque de Nodo                                                           |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Conectar nodo a la red                                                     |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | NA                                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo instalado                                                             |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Equipo, Nodo                                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo, Presentador                                                          |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | El nodo publica sus     | RNF. El nodo no vuelve a enviar email                                      |
+|    | datos en el Presentador +----------------------------------------------------------------------------+                                          
+|    |                         | RNF. El nodo envía con cierta frecuencia un paquete UDP con información    |
+|    |                         | sobre su localización, IP publica, IP interna y puerto interno,            |
+|    |                         | así como otros datos que puedan ser de utilidad.                           |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/arranque.nodo.activado.png 
+        :scale: 250%
+        :alt: Fig17
+
+        Fig. :counter:`figure`: Diagrama temporal de arranque de nodo
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.020. Invitación de contacto
+.......................................
+
+Lo primero que debe hacer un usuario para comunicarse con otro es realizar una invitación de contacto.
+ZOE no está pensado para que todos hablen con todos, sino para establecer una red de amigos a amigos F2F.
+
+Lo único que debe hacer un usuario para invitar a otro es enviar un mensaje de invitación al otro contacto.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.020 Envío Invitación de contacto**                                                           |
++==============================+============================================================================+
+|**Título**                    | Envío Invitación de contacto                                               |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Invitar a contacto                                                         |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | NA                                                                         |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo instalado y operativo                                                 |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | NodoA, NodoB                                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | NodoA, NodoB                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | A localiza a B          | RNF. Uso del presentador E.007                                             | 
+|    |                         |                                                                            |
+|    | A envía invitación a B  |                                                                            |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/invitacion.contacto.png 
+        :scale: 250%
+        :alt: Fig18
+
+        Fig. :counter:`figure`: Diagrama temporal de Invitación de contacto
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.021. Envío de mensaje
+.................................
+
+Una vez que dos nodos han sido "conectados", el envío de mensajes se produce directamente entre ambos,
+sin que, en principio, intervenga ningún nodo intermedio. Aún así, la comunicación entre ambos es encriptada,
+opcionalmente, mediante clave pública-clave privada.
+
+.. note::
+
+  Obviamente, dos nodos que quieran comunicarse de manera encriptada, deberán intercambiar sus claves públicas.
+  Puesto que un canal no seguro no es seguro hasta que lo sea, la mejor forma de intercambiar las claves sería
+  "en mano", pero dependiendo del nivel de paranoia de los usuarios, se podrían intercambiar por correo
+  electrónico, recursos compartidos en la nube, etc ...
+
+Se establecen dos categorías de mensajes:
+
+ - Mensajes sin garantía de entrega, al más puro estilo UDP. El mensaje se envía y no se espera confirmación.
+ - Mensajes con garantía de entrega: el envío del mensaje se reintenta hasta que bien:
+
+  - El mensaje haya sido entregado
+  - El usuario cancele el mismo
+
+Sólo los mensajes con *payload*, generados por el usuario, y los correspondientes a invitaciones o
+aceptación de invitaciones, se envían con garantía.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.021 Envío de mensaje**                                                                       |
++==============================+============================================================================+
+|**Título**                    | Envío de mensaje                                                           |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Enviar un mensaje                                                          |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nuevo mensaje a enviar                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo instalado y activado                                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | NodoA, Presentador, NodoB                                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo A, NodoB, presentador                                                 |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Si envío con garantía   | E.027 Envío de mensaje con garantía                                        | 
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | Si envío sin garantía   | E.026 Envío de mensaje sin garantía                                        | 
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | A localiza a B          | RNF. Uso del presentador E.007                                             | 
++----+-------------------------+----------------------------------------------------------------------------+
+
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.022. Envío de mensaje sin garantía
+...............................................
+
+Los mensajes sin garantía se envían una sóla vez y no esperan ningún tipo de *ack* por parte del
+destinatario.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.022 Envío de mensaje sin garantía**                                                          |
++==============================+============================================================================+
+|**Título**                    | Envío de mensaje sin garantía                                              |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Enviar un mensaje sin necesidad de garantía de entrega                     |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nuevo mensaje a enviar sin garantía                                        |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo instalado y activado                                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | NodoA, NodoB                                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Core, Storage, Net, Presentador                                            |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Si requiere historia    | E.010 Storage Almacena mensaje                                             |               
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | Si no requier historia  | No se almacena el mensaje                                                  | 
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | A localiza a B          | RNF. Operativa del presentador E.032                                       | 
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | Si B localizado         | E.026 Despachar mensaje                                                    |
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | Si B no localizado      | Si mensaje registrado, Storage marca como no enviado                       | 
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/envio.mensaje.sin.garantia.png 
+        :scale: 250%
+        :alt: Fig19
+
+        Fig. :counter:`figure`: Diagrama temporal de envío de mensaje sin garantía
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.023. Envío de mensaje con garantía
+...............................................
+
+Los mensajes de garantía se intentarán entregar hasta que se den una de estas tres circunstancias:
+
+ - Que el mensaje haya sido entregado
+ - Que el usuario lo elimine.
+
+Además, los mensajes con garantía siempre se registran en la base de datos local.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.023 Envío de mensaje con garantía**                                                          |
++==============================+============================================================================+
+|**Título**                    | Envío de mensaje con garantía                                              |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Enviar un mensaje con necesidad de garantía de entrega                     |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nuevo mensaje a enviar con garantía                                        |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo instalado y operativo                                                 |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Nodo                                                                       |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Mensaje, Core, Storage, Net, Presentador                                   |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Almacenar mensaje       | Storage almacena mensaje                                                   |               
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | A localiza a B          | RNF. Uso del presentador E.007                                             | 
+|    |                         +----------------------------------------------------------------------------+                                          
+|    |                         | RNF. En ningún momento vuelve a viajar el email de B                       |
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | Si B localizado         | E.026 Net despacha mensaje                                                 |
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | Si B no localizado      | Dejar mensaje como pendiente                                               |
+|    |                         +----------------------------------------------------------------------------+                                          
+|    |                         | RNF. En este caso el mensaje queda en el almacenamiento como pendiente     |
+|    |                         | de entregar y se seguirá intentando hasta que:                             |
+|    |                         |                                                                            |
+|    |                         | - B reciba el mensaje                                                      |
+|    |                         | - A cancele el mensaje                                                     |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/envio.mensaje.con.garantia.png 
+        :scale: 200%
+        :alt: Fig20
+
+        Fig. :counter:`figure`: Diagrama temporal de envío de mensaje con garantía
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.024. Aceptación de contacto
+........................................
+
+Cuando un nodo recibe una invitación de contacto el usuario deberá decidir qué hace con dicha invitación:
+Si aceptarla o eliminar el contacto invitante.
+
+- Si la acepta, enviará la aceptación a A y ambos nodos serán "amigos".
+- Si elimina el contacto invitante, su nodo no enviará ningún mensaje al invitador y para este la invitación estará pendiente
+  de aceptar 
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.024 Aceptación de contacto**                                                                 |
++==============================+============================================================================+
+|**Título**                    | Aceptación de contacto                                                     |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Aceptar un contacto del que se ha recibido invitación                      |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | B recibe invitación de A                                                   |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Invitación pendiente de aceptar                                            |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | NodoA, NodoB                                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | NodoA, NodoB                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Si el usuario B acepta  | El nodo de B envía la aceptación a A                                       | 
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Si B no acepta          | RNF Si no hace nada, el nodo no hace nada. La invitación queda pendiente   |
+|    |                         |                                                                            |
+|    |                         | RNF Si elimina la invitación, no se envía ningún mensaje. Le quedara       |
+|    |                         | a A como pendiente de aceptar por B                                        |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/aceptacion.contacto.png
+        :scale: 200%
+        :alt: Fig21
+
+        Fig. :counter:`figure`: Diagrama temporal de Aceptación de Contacto
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.025. Almacenar Mensaje
+.....................................
+
+El sistema requiere persistencia de los mensajes enviados y recibidos. En futuras implementaciones, este
+almacenamiento permitirá consultar históricos, cancelar envíos pendientes, aceptar invitaciones pendientes
+recibidas o cancelar invitaciones pendientes enviadas, entre otras muchas cosas.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.025 Almacenar Mensaje**                                                                      |
++==============================+============================================================================+
+|**Título**                    | Almacenar Mensaje                                                          |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Registrar un mensaje en almacenamiento local                               |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Nodo de A                                                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Nodo operativo y operativo                                                 |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Nodo instalado y operativo                                                 |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Nodo A, mensaje                                                            |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo A                                                                     |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Completar metadatos     | - id de mensaje. RNF. delegado en motor DB                                 |
+|    |                         | - to: email de destinatario                                                |
+|    |                         | - tipo de mensaje: DATA, CAL, HEL ...                                      |
+|    |                         | - timestamp: UTC timestamp                                                 |
+|    |                         | - payload: payload                                                         |
+|    |                         | - ackd: entrega confirmada                                                 |
+|    |                         | - encrypt: si el mensaje ha de ser encriptado                              |
+|    +-------------------------+----------------------------------------------------------------------------+                                          
+|    | Pedir a storage que lo  | - RNF. Independiente de motor de DB                                        |    
+|    | almacene                |                                                                            |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/almacenar.mensaje.png 
+        :scale: 250%
+        :alt: Fig22
+
+        Fig. :counter:`figure`: Diagrama temporal de Almacenar Mensaje
+
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.026. Despachar mensaje
+.....................................
+
+El despachador de mensajes es un simple componente que hace de intermediario entre
+el módulo de almacenamiento y el módulo de red.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.026 Despachar Mensaje**                                                                      |
++==============================+============================================================================+
+|**Título**                    | Despachar Mensaje                                                          |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Enviar mensaje a B utilizando la capa de red                               |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Mensaje pendiente de enviar                                                |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Existe un mensaje pendiente de enviar a B                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Nodo A                                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo A, NodoB                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Se le pide a la capa de | Envío por red                                                              |
+|    | red que lo envíe        | RNF. No se espera respuesta del remoto                                     |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | La capa de red retorna  | RNF. Sólo de la operación de enviar en sí misma, no de si el remoto        |
+|    | resultado               | recibió o no el mensaje.                                                   |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/despachar.mensaje.png 
+        :scale: 250%
+        :alt: Fig23
+
+        Fig. :counter:`figure`: Diagrama temporal de Despachar mensaje
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.027. Obtener Mensajes Pendiente
+............................................
+
+En este escenario, tanto el despachador de mensajes, como otros procesos del sistema internos o externos
+solicitan mensajes pendientes al módulo de almacenamiento.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.027 Obtener Mensajes Pendientes**                                                            |
++==============================+============================================================================+
+|**Título**                    | Obtener Mensaje Pendiente                                                  |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Obtener de la capa de storage el siguiente mensaje pendiente               |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Mensaje pendiente de enviar                                                |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Existe un mensaje pendiente de enviar a B                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Nodo A                                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo A, despachador, otros                                                 |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Storage retorna la      |                                                                            |
+|    | lista de mensaje s      |                                                                            |
+|    | pendientes              |                                                                            |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/obtener.mensaje.pendiente.png 
+        :scale: 250%
+        :alt: Fig24
+
+        Fig. :counter:`figure`: Diagrama temporal de obtener mensaje pendiente
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.028. Envío por Red
+...............................
+
+El módulo de red se encarga de encargar al protocolo adecuado que codifique el mensaje y lo envía por el 
+canal correspondiente.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.028 Envío por Red**                                                                          |
++==============================+============================================================================+
+|**Título**                    | Envío por Red                                                              |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Enviar mediante la capa de red un mensaje                                  |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Mensaje encolado para enviar                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Existe un mensaje pendiente de enviar a B                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | CoreA, NetA, RouterA                                                       |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo A, Nodo B                                                             |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Net codifica el mensaje | E.014 Codificación ZOE                                                     |
+|    | con protocolo ZOE       |                                                                            |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Net  pide a Routing     | E.015 Query Address                                                        |
+|    | la dirección conocida   |                                                                            |
+|    | de B                    |                                                                            |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Net envía el mensaje    | RNF. Desantendido: No se espera respuesta                                  |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/envio.por.red.png
+        :scale: 250%
+        :alt: Fig25
+
+        Fig. :counter:`figure`: Diagrama temporal de envío por red
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.029. Codificación ZOE
+....................................
+
+El protocolo estándar de ZOE será pZoe. Todos los mensajes, antes de ser enviados por el módulo de red
+deberán ser formateados según este protocolo, al igual que todos los mensajes entrantes deberán ser parseados
+por el mismo.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.029 Codificación ZOE**                                                                       |
++==============================+============================================================================+
+|**Título**                    | Codificación ZOE                                                           |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Construir un mensaje en protocolo ZOE                                      |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Mensaje encolado en Red para enviar                                        |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Existe un mensaje pendiente de enviar a B                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Nodo A                                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo A                                                                     |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Net solicita al proto   | RNF. Definición proto ZOE                                                  |
+|    | ZOE que construya       |                                                                            |
+|    | un mensaje válido       |                                                                            |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | proto ZOE retorna el    |                                                                            |
+|    | mensaje construido      |                                                                            |
++----+-------------------------+----------------------------------------------------------------------------+
+
+Todo mensaje de ZOE está compuesto por los siguientes campos:
+
+======== ================== ===========================================
+Campo    Tipo               Descripción
+======== ================== ===========================================
+cmd      text               Comando 
+mid      uuid               Identificador único de mensaje
+from     hash               Identificador de remitente
+to       hash               Identificador de destino
+msg_type text               Tipo del mensaje
+payload  text               Payload del mensaje
+encrypt  bool		    Indica si el mensaje ha de ser encriptado
+======== ================== ===========================================
+
+La codificación utilizada, como ejemplo, es una sencilla codificación cpickle [#cpickle]_.
+
+.. [#cpickle] http://docs.python.org/release/2.5/lib/module-cPickle.html
+
+Zoe maneja un conjunto reducido de tipos de mensajes que se muestran a continuación:
+
+**Tipos de mensajes:**
+
+========== =========================================
+Tipo       Descripción
+========== =========================================
+HEL        Publicación de datos en nodo remoto
+SEA        Preguntar a nodos conocidos por otro nodo
+DATA       Mensaje con "payload"
+CAL        Solicitud de "llamada" a otro nodo
+ACK        ack de mensaje recibido
+========== =========================================
+
+.. figure:: uml/images/protocol.zoe.png 
+        :scale: 250%
+        :alt: Fig26
+
+        Fig. :counter:`figure`: Diagrama temporal de codificación y decodificación en Protocol
+
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.030. Query Address
+...............................
+
+Cuando un nodo quiera comunicarse con otro, lo primero que ha de hacer es localizar su dirección y puerto.
+Si el nodo remoto ha sido "visto" recientemente, dicha dirección y puerto estará en su memoria local.
+
+Si el nodo no está en su lista de nodos "activos", el módulo de enrutamiento comenzará un proceso de
+punching [#punching]_.
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.030 Query Address**                                                                          |
++==============================+============================================================================+
+|**Título**                    | Query Address                                                              |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Obtener la dirección de un remoto                                          |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Mensaje encolado en Red para enviar                                        |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Existe un mensaje pendiente de enviar a B                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Nodo A, Router                                                             |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo A, B, Router                                                          |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Router comprueba si     | RNF. Lista local                                                           |
+|    | conoce la ubicación de B|                                                                            |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Si la conoce            | Retorna la IP:puerto de B                                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Si no la conoce         | - Router retorna fallo   (None)                                            |
+|    |                         | - A envia SEARCH (SEA) a cada nodo conocido para B                         |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/query.address.png 
+        :scale: 250%
+        :alt: Fig27
+
+        Fig. :counter:`figure`: Diagrama temporal de query address
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.031. Discover
+.............................
+
+Mediante el uso de un Presentador, que tiene su puerto UDP accesible, los nodos pueden solicitar conexión
+con otros. Una vez que ambos nodos conocen la dirección del contrario, se puede establecer una conexión
+P2P entre ellos, aunque sus puertos UDP no sean accesibles. Esta cuestión será analizada en profundidad
+posteriormente. 
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.031 Discover**                                                                               |
++==============================+============================================================================+
+|**Título**                    | Discover                                                                   |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Obtener conexion P2P con remoto                                            |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Dispositivo de usuario                                                     |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Mensaje encolado en Red para enviar                                        |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Existe un mensaje pendiente de enviar a B                                  |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Nodo A, Presentador                                                        |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo A, B, Presentador                                                     |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Router envía un mensaje | RNF. Este mensaje se repite periódicamente hasta que:                      |
+|    |                         |                                                                            |
+|    |                         |   - Se obtiene dirección de B                                              |
+|    |                         |   - No hay nada pendiente para B                                           |
+|    |                         |                                                                            |
+|    +-------------------------+                                                                            |
+|    | Si se recibe mensaje    | Se envía mensaje HEL a B                                                   |
+|    | de Presentador sobre    |                                                                            |
+|    | ubicación de B          |                                                                            |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Si A recibe mensaje de  | Se registra su dirección actual                                            |
+|    | B                       |                                                                            | 
+|    |                         |                                                                            |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Restricción**                                                                                            |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Operativa de Presentador| E.032                                                                      |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/discover.png
+        :scale: 230%
+        :alt: Fig28
+
+        Fig. :counter:`figure`: Diagrama temporal de discover
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+Escenario E.032. Operativa Presentador
+.......................................
+
+Todos los nodos son iguales. Lo único que diferencia a un presentador es que su puerto UDP es accesible y
+que suele estar "vivo".
+
+El Presentador no tiene almacenamiento. Sus función exclusiva es:
+
+ - Poner en contacto dos nodos que quieren conectarse 
+
++-----------------------------------------------------------------------------------------------------------+
+|**Escenario E.032 Operativa Presentador**                                                                  |
++==============================+============================================================================+
+|**Título**                    | Operativa Presentador                                                      |
++------------------------------+----------------------------------------------------------------------------+
+|**Objetivo**                  | Servir de directorio para localización entre nodos                         |
++------------------------------+----------------------------------------------------------------------------+
+|**Contexto**                                                                                               |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación geográfica    | Nodo estable                                                               |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Ubicación temporal      | Cuando se quieren conectar dos nodos                                       |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Precondición            | Puerto UDP accesible                                                       |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Recursos                | Nodo A, Presentador, Nodo B                                                |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Actores                 | Nodo A, Presentador, Nodo B                                                |
++----+-------------------------+----------------------------------------------------------------------------+
+|**Episodios**                                                                                              |
++----+-------------------------+----------------------------------------------------------------------------+
+|    | Los nodos se publican   | Cada nodo envía, con una latencia fija, un mensaje de publicación          | 
+|    |                         | a los nodos conocidos, entre ellos a los presentadores.                    |
+|    |                         | En este mensaje se envía información referente al nodo como:               |
+|    |                         |                                                                            |
+|    |                         | - uuid del nodo                                                            |
+|    |                         | - ip:puerto local                                                          |
+|    |                         | - ...                                                                      |
+|    |                         |                                                                            |
+|    |                         | RNF. Los nodos, incluidos los presentadores, no tienen memoria sobre       |
+|    |                         | direccionamiento. Los nodos registrados, que lo están sólo en memoria,     |
+|    |                         | se eliminan cada cieto tiempo.                                             |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | P recibe un mensaje     | Mediante este mensaje, A está solicitando al Presentador información       |
+|    | SEA(B)                  | sobre dónde se encuentra B                                                 |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Si P conoce a B         | RNF. P envía sendos mensajes CALL(A) y CALL(B) a ambos nodos               |
+|    | envía a A las           | Estos mensajes incorporan información sobre direcciones privadas.          |
+|    | coordenadas de B y a    |                                                                            |
+|    | B las coordenadas de A  |                                                                            |
+|    +-------------------------+----------------------------------------------------------------------------+
+|    | Si P no conoce a B      |                                                                            |
+|    | no hace nada            |                                                                            |
++----+-------------------------+----------------------------------------------------------------------------+
+
+.. figure:: uml/images/operativa.presentador.png
+        :width: 1800
+        :alt: Fig29
+
+        Fig. :counter:`figure`: Diagrama temporal simplificado de Operativa Presentador
+
+
+
+.. raw:: pdf
+
+    PageBreak 
+
+
+.. [#escenarios] http://wer.inf.puc-rio.br/WERpapers/artigos/artigos_WER09/hadad.pdf
+
+

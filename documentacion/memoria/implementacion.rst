@@ -1,0 +1,1205 @@
+Implementación
+==============
+
+Entorno de desarrollo
+----------------------
+
+En una empresa de desarrollo de software, normalmente las herramientas utilizadas, el entorno de desarrollo y la metodología
+aplicada están -o deberían estar- bien definidas y no supone una tarea adicional que deberá planificarse junto con las demás.
+
+En este trabajo, sin embargo, no están definidas ni las herramientas ni el entorno de desarrollo ni la metodología.
+
+Esto constituirá, por tanto, una fase más del proyecto, que deberá ser resuelta con esmero puesto que cambiar a mitad de
+proyecto de herramientas, entorno de trabajo o metodología normalmente producirá un gran trastorno, si es que fuera posible.
+
+Lo normal si se producen errores en la resolución de estos aspectos, es que se sigan "sufriendo" hasta el final del proyecto
+sin ser modificados, puesto que el coste en tiempo y dinero no sería asumible.
+
+Herramientas:
+
+- Sistema Operativo: Linux Debian 6 y Mint 12
+- Lenguaje de programación: Python2.6 y bash
+- IDE: Wing 4.0 y vim
+- Documentación: RestructuredText
+- Motor de bases de datos: sqlite3
+- Expresiones regulares: Kodos
+- Control de versiones: Git, gitk y git gui
+- Gestor de tickets: Trac
+- Backup adicional y sincronización entre equipos: Dropbox
+- Generación de gráficos: GnuPlot
+- Tratamiento de imágenes: Gimp
+- Diagramas UML: plantuml, websequencediagrams y dia
+- Tests unitarios: pytest
+- Ajuste a PEP8: pylint
+- Integración continua: Jenkins
+- make
+
+A continuación se hará una breve justificación de cada una de las herramientas utilizadas. Lo cierto es que el análisis de
+cada una de ellas podría constituir, por si mismo, tema para un Proyecto de Fin de Carrera.
+
+.. page::
+
+Sistema Operativo
+*****************
+
+Los sistemas operativos utilizados en el desarrollo han sido Debian7 sobre un DELL 260ST y Mint 12 sobre
+un portátil Sony VAIO.
+
+La elección de Linux se debe a que entiendo que un sistema UNIX es el sistema idóneo para soportar desarrollos
+de software como el realizado en este trabajo. No es del alcance de este trabajo entrar en un debate 
+sobre qué sistema operativo es mejor o peor, pero la experiencia al respecto es contundente.
+
+Incluso si se tiene que desarrollar, por imperativos del proyecto, sobre otros operativos, Linux resulta 
+perfecto para integrar todas las herramientas necesarias.
+
+.. image:: ./images/debian.mint.jpg
+   :scale: 40%
+
+
+Lenguaje de programación
+*************************
+
+Este trabajo consiste en la realización de un software en el que la clave está en comunicaciones entre ordenadores
+o dispositivos a través de sockets UDP, traspasando NATs y cortafuegos.
+
+Además, tiene un pequeño soporte de bases de datos para hacer posible su funcionamiento.
+
+Con estas premisas, cualquier lenguaje existente que tenga soporte para sockets UDP y cualquier forma de 
+almacenamiento, sería susceptible de ser utilizado.
+
+Algunos de los lenguajes más populares que podrían haberse utilizado son:
+
+- C++ en cualquiera de sus sabores,
+- Java
+- Visual Basic
+- PHP
+- etc
+
+Sin embargo, se ha dedicido utilizar Python, por tratarse de un lenguaje elegante, estructurado, limpio, 
+multiplataforma y de muy ràpido desarrollo ( se dice que una misma rutina en java ocupa entre 5 y 10 veces más
+que la misma en python ... )
+
+.. image:: ./images/python.jpg
+   :width: 500 
+
+C++, por supuesto, es más rápido que python. También java lo es en muchas ocasiones. Sin embargo, la velocidad
+de ejecución que ofrece python es más que suficiente para cubrir las necesidades de este trabajo.
+
+En cualquier caso, no se hacen uso de funcionalizades exclusivas de python, como funciones lambda [#lambda]_ 
+o yields [#yield]_, de manera que el *"porting"* a cualquier otro lenguaje podría ser directo.
+
+IDE
+***
+
+WingIDE (http://wingware.com/?gclid=COPx_7WVlrkCFe_LtAodnwoAZw) es un IDE muy ligero y específico para python. 
+Si bien no es libre, existe una versión gratuita perfectamente utilizable.
+
+.. image:: ./images/wingide.png
+
+La elección de WingIDE se debe a ser el normalmente utilizado por el autor de este trabajo.
+
+Obviamente, cualquier IDE -preferiblemente con capacidad de depuración sobre python - hubiera sido utilizable 
+para la realización del software, como el popular Eclipse [#eclipse]_.
+
+.. [#eclipse] http://www.eclipse.org/
+
+VI
+**
+
+VI es un editor de texto disponible probablemente en cualquier instalación de cualquier sistema operativo tipo
+UNIX. Al no depender de un entorno gráfico, vi se puede utilizar para realizar cambios en archivos locales o
+remotos ( via ssh, por ejemplo ) con enorme rapidez.
+
+.. image:: ./images/vim.jpg
+   :width: 300 
+
+Restructured Text
+*****************
+
+Diseñado originalmente para extraer de forma automática documentación de fuentes en python, 
+RestructuredText
+proporiona una manera muy cómoda de poder generar documentos en un buen número de formatos como html, docbook,
+html, LaTeX o pdf.
+
+
+Los fuentes de los documentos rst son ficheros ascii planos, que hacen que se integren perfectamente en sistemas
+de control de versiones y de cambios y que las mezclas se puedan realizar perfectamente siempre que sea posible,
+como si se estuviera mezclando código fuente.
+
+Una clara ventaja sobre otras alternativas similares como docbook o LaTeX es que los fuentes de RST son muy limpios 
+y se pueden leer perfectamente en ASCI 
+
+.. page::
+
+Sqlite3
+*******
+
+Todos los accesos a datos almacenados se realizan a través de un interface Storage. Esto tiene la evidente ventaja
+de que podrá utilizarse cualquier clase que implemente ese interfaz.
+
+Puesto que el almacenamiento estará completamente desacoplado de la lógica de la aplicación en un patrón tipo MVC,
+el almacenaje podría ser cualquier motor de bases de datos, file system, S3, o cualquier otro que pudiera imaginarse
+o diseñarse.
+
+En este trabajo se ha utilizado Sqlite3 por ser un motor de base de datos muy ligero y que no requiere de servidor
+alguno.
+
+.. image:: ./images/sqlite.gif
+   :width: 500 
+
+Kodos
+*****
+
+Una de las formas más potentes de procesar cadenas de texto es la utilización de expresiones regulares. 
+Kodos ( http://kodos.sourceforge.net/home.html ) es una herramienta específica para generar y probar expresiones
+regulares de python
+
+.. image:: ./images/kodos.png
+   :width: 500 
+
+GIT
+***
+
+Actualmente resulta impensable el desarrollo de software sin utilizar un sistema de control de versiones. 
+
+A parte de soluciones comerciales, algunas de las más populares son CSV o SVN ( Subversion ). Como sistemas de
+control de versiones más modernos destacan Mercurial o Git, siendo éste último el escogido para este trabajo ya
+que es extremadamente rápido y fiable.
+
+.. image:: ./images/git.jpg
+   :width: 500 
+
+Si bien la curva de aprendizaje de GIT es algo más complicada que csv o svn, las ventajas que reporta son grandes
+puesto que gestiona perfectamente el control de diferentes ramas y aportaciones a cada una de ellas. Además es
+muy rápido y ligero y resuelve las mezclas con gran eficacia.
+
+.. page::
+
+
+Trac
+****
+
+Al igual que no se puede concebir un desarrollo de software sin control de versiones, tampoco se puede hacer sin
+control de tareas. 
+
+- ¿ Qué tareas hay pendientes ?
+- ¿ En cuales se está trabajando ?
+- ¿ Quién es responsable de cada tarea ?
+- ¿ Cuanto tiempo va a consumir o ha consumido ?
+- ¿ Qué subtareas ( breakdown ) tiene una tarea ?
+- ¿ Qué dependencia existe entre tareas y cuales son bloqueantes ?
+- etc
+
+Existen muchos gestores de tickets, siendo en el software libre uno de los más populares Trac, puesto que es 
+altamente configurable y dispone de multitud de plugins para integrarse con otros sistemas.
+
+El Departamento de Lenguajes y Sistemas informáticos proporciona un espacio de Trac a los alumnos de Proyecto
+de Fin de Carrera.
+
+Si bien se trata de un trac escueto, proporciona una funcionalidad básica de gestión de tickts que sirve para
+ilustrar su funcionamiento.
+
+http://1984.lsi.us.es/pfe/trac/pfe-f2f-im
+
+En todo caso, en un trac propio, se puede configurar para que sea enormente más útil, con breakdown de tareas,
+bloqueos, recursos, integración con git, etc ...
+
+.. image:: ./images/trac.jpg
+   :width: 500 
+
+Backup
+******
+
+Puesto que todo el proyecto está en GitHUB, este supone un backup de hecho. Sólo con hacer un git clone de la
+URL apropiada se tendrá una copia del proyecto en local.
+
+Como backup adicional, el directorio del proyecto y todos los que cuelgan de él, se mantienen sincronizados en
+Dropbox.
+
+.. image:: ./images/dropbox.jpg
+   :width: 300 
+
+Una manera nada sofisticada y muy efectiva de tener backup de un proyecto.
+
+.. page::
+
+Gráficos basados en datos
+*************************
+
+Los gráficos basados en datos utilizados en este proyecto se definen en ascii, lo cual permite automatizarlos, si fuera
+necesario desde una fuente de datos externa.
+
+Para renderizarlos se utiliza el software libre GNUPlot [#gnuplot]_.
+
+.. [#gnuplot] http://www.gnuplot.info/
+
+Manipulación de imágenes
+************************
+
+Gimp ( http://www.gimp.org.es/ ) se ha utilizado para las manipulaciones de imágenes que ha requerido este trabajo.
+
+.. image:: ./images/gimp.jpg
+   :width: 500 
+
+Gráficos UML
+************
+
+Una de las premisas en este trabajo es trabajar cuanto se pueda en ASCII. 
+
+Esta estrategia no sólo permite regenerar automáticamente todos los diagramas, y en consecuencia los documentos
+que los incluyan,  si se decidiera, por ejemplo, cambiar el estilo, sino que permite una perfecta integración con GIT.
+
+Esto incluye muchos de los diagramas UML utilizados, como diagramas de tiempo o de clases. El motivo es que puedan editarse
+fácilmente con cualquier editor, dedicando el esfuerzo a definir lo que tienen que representar y no cómo se va
+a representar.
+
+El resultado final se delega en el "renderizador" utilizado, en este caso los programas gratuitos
+plantuml y websequencediagrams ( http://plantuml.sourceforge.net/ y http://www.websequencediagrams.com/ ).
+
+Para diagramas que requiren una presentación más cuidada y controlada, se ha utilizado Dia [#dia]_, que genera
+ficheros XML que pueden, también, ser procesados de forma automática.
+
+.. [#dia] https://projects.gnome.org/dia/
+
+Tests Unitarios
+***************
+
+Los tets unitarios constituyen una valiosa herramienta para asegurar que el código está probado y que se cumplen
+las especificaciones.
+
+Por ejemplo, en el desarrollo de un video juego es probable que una frame en HD tenga que renderizarse en menos
+de x milisegundos. Si no se utilizaran baterías de tests frecuentamente -continuamente, de hecho-, un desarrollador
+podría incorporar una modificación que no rompe la compilación, pero que dispara el tiempo de renderizado.
+
+Con los tests units, este problema se conocería en cuanto se provoca y no quedaría oculto.
+
+Python dispone de un excelente sistema de tests units, soportado por pytest (http://pytest.org/latest/). 
+De hecho, veremos que es uno de los componentes fundamentales que incluiremos en el sistema de integración continua.
+
+.. page::
+
+PEP8
+**** 
+
+Uno de las, a juicio de muchos, entre los que se incluye el autor de este trabajo, virtudes de python es que todo
+lo que está escrito en python tiene un aspecto "pythonico". 
+
+La idea es evitar los gustos particulares de cada programador y que todo el código, lo haya escrito quien lo haya
+escrito, tenga el mismo aspecto, lo cual facilita el trabajo en equipo.
+
+PEP-8 ( http://www.python.org/dev/peps/pep-0008/ ) define una "guía de estilo" de cómo deben escribirse los programas
+en python y la herramienta pylint ( http://www.pylint.org/ ) ayuda a analizar el código reportando la calidad
+del mismo en base a PEP-8.
+
+
+Intregración Contínua
+*********************
+
+.. class:: table-cita:
+
+ "La integración continua (continuous integration en inglés) es un modelo informático propuesto inicialmente 
+ por Martin Fowler que consiste en hacer integraciones automáticas de un proyecto lo más a menudo posible 
+ para así poder detectar fallos cuanto antes. Entendemos por integración la compilación y ejecución de tests 
+ de todo un proyecto." [#cita.integracion.continua]_
+
+.. [#cita.integracion.continua] http://es.wikipedia.org/wiki/Integraci%C3%B3n_continua
+
+.. image:: ./images/jenkins.jpg
+
+Efectivamente, si es malo que se incorpore un error a la rama master, es mucho peor que dicho error quede oculto
+y que no se detecte lo antes posible.
+
+Con sistemas de integración continua, evidentemente los errores sintácticos se conocen en el acto, pero también, 
+si se han escrito los tests apropiados, los errores que de otra forma serían indetectables.
+
+Además, permite tener una valiosa información en tiempo real sobre la calidad sintáctica del código escrito y
+sobre el nivel de cobertura del código por los tests escritos.
+
+Jenkins [#jenkins]_ es una solución de software libre, realizado en java, que dispone de multitud de 
+plugins que permiten un seguimiento muy preciso del desarrollo de software.
+
+.. [#jenkins] http://jenkins-ci.org/
+
+En este proyecto, tal como se muestra en la figura 31, cada vez que se hace un commit al repositorio de Git, este
+provoca una build en el servidor de Jenkins. 
+
+La build reporta no sólo si han pasado todos los tests, sino multitud de información sobre tiempos de ejecución,
+calidad del código en base a PEP-8 o cobertura.
+
++-----------------------------------------------------------------+
+| Algunos diagramas de Jenkins                                    |
++=================================+===============================+
+|.. image:: ./images/coverage.png | .. image:: ./images/tests.png |
++---------------------------------+-------------------------------+
+|.. image:: ./images/pylint.png   | .. image:: ./images/lines.png |
++---------------------------------+-------------------------------+
+
+.. page::
+
+Metodología
+-----------
+
+Es imprescindible adoptar una metodología de trabajo. Desde mediados de los 90 [#metodos_agiles]_ se comenzaron a definir métodos
+ágiles de desarrollo, como el famoso Scrum [#scrum]_.
+
+Todos ellos se basan en definir operativas ágiles y efectivas de desarrollo. No creo que ninguna sea mejor que otra.
+De hecho todas tienen sus puntos fuertes y puntos débiles. Lo que es seguro es que hay que adoptar alguna. 
+
+Y cumplirla. 
+
+No entraremos a discutir las cuestiones sobre ciclos, iteraciones, hitos, "dead lines" y demás cuestiones que quedan
+fuera del ámbito de este trabajo.
+
+En lo que incideremos someramente es en el "ciclo típico de desarrollo", una vez que se ha definido un ticket que
+tiene que resolver una cuestión determinada.
+
+.. [#metodos_agiles] http://es.wikipedia.org/wiki/Desarrollo_%C3%A1gil_de_software
+.. [#scrum] https://www.scrum.org/
+
+Ciclo típico de desarrollo
+**************************
+
+Los desarrolladores tienen que desarrollar. Y tienen que hacerlo bien. En este trabajo se ha definido una metodología
+similar a las muchas existentes, para garantizar, dentro de lo posible que el trabajo de desarrollo es el correcto.
+
+En primer lugar, y fuente de algún otro procedimiento en la metodología de desarrollo ágil utilizada, se genera
+un ticket que se registra en Trac.
+
+Asignación
+...........
+
+En algún momento, ese ticket se asigna a un desarrollador. Es posible que sea un responsable de proyecto el que
+asigne el ticket, si la metodología lo permite que sea otro compañero o que un desarrollador se lo autoasigne.
+
+"Puesta al día"
+...............
+
+El desarrollador debe asegurarse de estár en la rama apropiada del repositorio. Para ello hará, si es necesario
+un commit de su rama actual de trabajo y obtendrá del repositorio la rama sobre la que debe trabajar.
+
+Resolución
+..........
+
+El desarrollador trabajará en el ticket asignado. En muchas metodologías, un desarrollador no puede dejar un ticket
+hasta que lo haya cerrado. En otras, sin embargo, se permite conmutar de ticket.
+
+Pruebas
+.......
+
+Está prohibido que un desarrollador aporte al repositorio cambios que rompan la compilación. 
+
+El desarrollador debe crear los tests necesarios para probar en nuevo código y debe pasar todas las baterías de
+tests pertinentes para garantizar que sus cambios no introducen ningún error en su parte y otras partes del 
+sistema.
+
+Adicionalmente, deberá comprobar que su código cumple con el estilo de codificación mediante pylint.
+
+Commit
+......
+
+Una vez que el ticket está resuelto, pasados los tests y comprobado pep8, el desarrollador podrá aportar los
+cambios al repositorio.
+
+.. page::
+
+Jenkins
+.......
+
+El repositorio de Git automáticamente provoca una build nueva en Jenkins, el servidor de integración continua.
+
+En caso de que los tests no pasen, las personas implicadas serán automáticamente notificadas. En teoría, si
+se cumple el procedimiento, esto no debería pasar nunca.
+
+
+.. figure:: ./uml/images/iteracion.tipica.png
+   :width: 1200
+   :alt: Fig30
+
+   Fig. :counter:`figure`:: Diagrama temporal de interación típica
+
+.. page::
+
+|
+|
+|
+|
+|
+
+.. figure:: ./dia/elementos.desarrollo.png
+   :width: 1200
+   :alt: Fig31
+
+   Fig. :counter:`figure`: Entorno de desarrollo
+
+Diseño
+======
+
+Del análisis de los escenarios definidos durante la elicitación de requisitos, se desprende conveniencia
+de desplegar una serie de paquetes bien definidos.
+
+.. figure:: ./dia/paquetes.png
+   :scale: 200%
+   :alt: Fig32
+
+   Fig. :counter:`figure`: Paquetes de ZOE
+
+Core
+----
+
+Core es el núcleo de la aplicación, se encarga de levantar todas los componentes necesarios y de servir de 
+conexión entre ellos.
+
+Sus tareas más destacadas son:
+
+- Instanciar cada uno de los módulos y plugins instalados y asegurarse de que siguen funcionando. En caso
+  de caida de alguno de ellos lo instanciará de nuevo y se delega en el colector de basuras de python
+  la destrucción del anterior.
+
+Originalmente Core se dispuso como un Singleton, patrón que encaja perfectamente con su cometido, pero debido
+a la complejidad extra que introducía en las baterías de tests, se optó por descartar esa opción.
+
+
+Utils 
+-----
+
+Paquete de utilidades genéricas que incluye clases y métodos de propósito general, utilizable desde
+cualquier punto de la aplicación tras hacer un import del módulo.
+
+Console
+-------
+
+Console proporciona uno de los dos interfaces de interacción con el sistema desde el exterior. En concreto,
+se deriva una clase de ella que es una consola por telnet, de manera que se puede hacer un telnet al
+puerto correspondiente y manejar el nodo, justo como se hace en mlDonkey.
+
+Esta conexión TCP puede ser hecho por un humano, mediante un telnet,  o por cualquier otro proceso automático.
+
+.. page::
+
+Net
+----
+
+Soporta toda la funcionalidad de comunicaciones. Net instancia, al menos, un router, un transporte y 
+un protocolo.
+
+Net oculta completamente las cuestiones de red o comunicaciones al usuario o proceso que lo utilice.
+
+Contacts
+--------
+
+Paquete que gestiona la gestión de contactos, incluyendo envío o aceptación de invitaciones.
+
+Storage
+-------
+
+El paquete storage oculta la forma en que se almacenan o explotan los datos. Por defecto, ZOE utiliza un
+storage basado en Sqlite3, pero se puede intercambiar por cualquiera que proporcione con su interfaz.
+
+Node
+----
+
+Paquete de alto nivel que gestiona envío y recepción de mensajes y solicitudes.
+
+Plugins
+-------
+
+Paquete diseñado para soportar plugins de terceros. ZOE se suministra con un plugin de ejemplo para
+que terceros puedan desplegar sus propios plugins en el sistema.
+
+
+Detalle de Paquetes y diagramas de clases
+=========================================
+
+Core
+----
+
+El paquete Core proporciona cuatro clases:
+
+- Core:
+
+  Al ejecutarse la aplicación se instancia y ejecuta una instancia de Core. Core es un un thread en
+  cuyo "main loop" sólo comprueba si los elementos instanciados están funcionando correctamente.
+
+- Publisher:
+
+  Uno de los criterios de diseño en el sistema ha sido utilizar un patrón de "Publicador/Subscriptor".
+  Esto facilita desacoplar los distintos elementos o futuros plugins instalados. A la vez que proporciona
+  una manera muy sencilla de tener procesos asíncronos.
+
+  La instancia de Core crea una instancia de Publisher que proporciona el único canal por defecto
+  para publicar o subscribirse a publicaciones desde cualquier punto.
+
+- TServer
+
+  Otra importante decisión de diseño ha sido evitar los problemas típicos de la utilización de threads.
+  En una implementación típica, suele ser habitual el lidiar con bloqueos y desbloqueos y esperar
+  que no se produzcan "dead locks" ...
+
+  En Zoe, los principales componentes son TServer, que no es más que un thread especializado que se
+  comporta como un "despachador" de tareas, manejando tres colas con prioridades.
+
+  Cualquier instancia que tenga acceso a un TServer le puede "encargar" que realize una tarea, sin esperar
+  respuesta y enganchando a un callback a la finalización de ella, o esperando respuesta y con prioridad
+  media, alta o baja.
+
+  La correcta utilización de TServer elimina completamente el problema de los "racings" entre threads ya
+  que cada TServer ejecuta su propio código con sus propios datos.
+
+  Esto no sólo evita lidiar con los bloqueos. También hace que el código sea muy limpio y no se
+  termine escribiendo código "spaguetti" donde cada thread intenta pelear por recursos que pertenecen 
+  a otros threads.
+
+- ZObject
+
+  ZObject proporciona a las clases que derivan de ella, unos métodos helper para utilizar el motor
+  de publicaciones/subscripciones y asegura que las instancias tengan un nombre y acceso al Core.
+
+|
+
+.. figure:: ./dia/core.png
+   :scale: 300%
+   :alt: Fig33
+
+   Fig. :counter:`figure`: Diagrama de clases del paquete Core
+
+
+Utils
+-----
+
+El paquete Utils suministra métodos de propósito general, como manejo de fechas,
+generación de UUIDS, cálculo de SHA1 y cinco clases que agrupan algunas funcionalidades
+específicas:
+
+- Singleton
+
+  Clase utilizada para definir instancias Singleton. Si bien el patrón de singleton es ampliamente
+  discutido y tiene tantos detractores como admiradores, en ocasiones encaja perfectamente con los 
+  requisitos.
+
+  De hecho, en este trabajo, originalmente, Core se diseñó como un singleton, puesto que sólo puede
+  existir un core en la aplicación. Sin embargo, como ya se expuso, se eliminó puesto que complicaba
+  enormemente la gestión de los tests units.
+
+- Mailer
+
+  Clase que proporciona un helper para enviar correos electrónicos a través de un MTA.
+
+- Netutils
+
+  Clase que aglomera utilidades de red como obtener lista de IPs de la máquina, determinar si una
+  IP es de lan o de WAN, indicar si dos IPs están en el mismo segmento de red , etc ...
+
+- ConfigManager
+
+  Proporciona métodos para obtener cómodamente valores de ficheros de configuración ASCII.
+
+
+- RSA
+
+  Proporciona métodos para encriptar, firmar y desencriptar mensajes de un nodo a otro mediante 
+  clave pública/clave privada.
+
+|
+|
+
+.. figure:: ./dia/utils.png
+   :width: 1000
+   :alt: Fig34
+
+   Fig. :counter:`figure`: Diagrama de clases del paquete Utils
+
+.. page::
+  
+Contacts
+--------
+
+El paquete Contacts proporciona una sola clase que encapsula las acciones a realizar con contactos
+que no son envío o recepción de mensajes, como invitar, aceptar, buscar, etc
+
+Deriva de TServer, que le proporciona la capacidad de compartarse de manera asíncrona como
+despachador de tareas y de ZObject que, como ya se indicó, le proporciona acceso al sistema publicador/subscriptor
+y al Core.
+
+Al derivar de TServer, la máquina de estados de Contacts es la misma que la de TServer.
+
+|
+|
+
+.. figure:: ./dia/contacts.png
+   :scale: 300%
+   :alt: Fig35
+
+   Fig. :counter:`figure`: Diagrama de clases del paquete Contacts
+
+.. page::
+
+Console
+--------
+
+El paquete console proporciona una de las principales características de ZOE ya que agrupa las
+clases que permiten desacoplar cualquier posible GUI de la lógica de la aplicación, en un patrón
+MVC y proporciona un método de operación sin GUI a través de un telnet.
+
+La clase console proporciona los métodos básicos de cualquier consola. Incluye también un 
+acceso, por defecto restringido, a un interprete embebido que da acceso a todos los objetos
+de la aplicación, diseñado, originalmente con efecto de debugging.
+
+Adicionalmente instancia un proveedor de consolas telnet, de manera que como respuesta a un
+telnet, instancia una consola telnet específica por conexión. Dicha consola telnet puede ser
+extendida con métodos y atributos adicionales, como en el caso de ZoeConsole.
+
+|
+|
+
+.. figure:: ./dia/console.png
+   :scale: 300%
+   :alt: Fig36
+
+   Fig. :counter:`figure`: Diagrama de clases del paquete Console
+
+.. page::
+
+Node
+----
+
+El paquete Node proporciona una sola clase que proporciona métodos de alto nivel de actuación en
+la aplicación, como generación de nuevos mensajes, invitación de contactos o aceptación de invitaciones.
+
+Adicionalmente, periódicamente interroga al storage por mensajes que estén pendientes de enviar,
+reintando su envío si procede.
+
+Deriva de TServer, que le proporciona la capacidad de compartarse de manera asíncrona como
+despachador de tareas y de ZObject que, como ya se indicó, le proporciona acceso al sistema publicador/subscriptor
+y al Core.
+
+|
+|
+
+.. figure:: ./dia/node.png
+   :scale: 300%
+   :alt: Fig37
+
+   Fig. :counter:`figure`: Diagrama de clases del paquete Node
+
+.. page::
+
+
+Net
+----
+
+Net proporciona la capa de comunicaciones de ZOE. Oculta completamente a otras capas y, por supuesto,
+a usuarios, cómo comunicarse con un nodo remoto. 
+
+Cuando la aplicación instancia el Core, este despliega una instancia de Net. Esta, a su vez
+despliega, al menos:
+
+- Un Router. Encargado, básicamente, de mantener la lista de nodos conocidos con sus direcciones
+  IP y puertos publicados y recibidos. 
+
+- Un transporte. Por defecto, y para poder realizarse UDP Hole Punching, Zoe utiliza un transporte
+  basado en sockets UDP, pero podría ser reemplazado por cualquier otro.
+
+  Zoe dispone un interface -Transport- que debe ser implementado. En este trabajo se implementará
+  UDPTransport.
+
+- Un protocolo. Por defecto, se utiliza el protocolo Zoe, que es simplemente una serialización del
+  mensaje en cPickle.
+
+  Zoe dispone un interface -Protocol- que debe ser implementado. En este trabajo se implementará
+  ZoeProtocol.
+  
+- Un Firewall. No se implementará en el presente trabajo. Su interface por defecto se reduce a dos
+  métodos: allow_in y allow_out.
+
+|
+|
+
+.. figure:: ./dia/net.png
+   :scale: 250%
+   :alt: Fig37
+
+   Fig. :counter:`figure`: Diagrama de clases del paquete Net
+
+.. page::
+
+Storage
+-------
+
+Storage encapsula todo el alacenamiento de datos persistentes en Zoe, como mensajes o información
+de contactos.
+
+Se trata de un interface que ha de ser implementado para su utilización. En concreto, en Zoe se
+implementa una versión basada en sqlite, pero, siempre que se implemente el interfaz, el almacenamiento
+podría ser cualquier otro inventado o por inventar, como sistema de archivos, cualquier motor de 
+bases de datos, etc ...
+
+|
+|
+
+.. figure:: ./dia/storage.png
+   :scale: 250%
+   :alt: Fig38
+
+   Fig. :counter:`figure`: Diagrama de clases del paquete Storage
+
+Modelo
+*******
+
+Cualquier storage que se derive de Storage debe dar soporte, al menos,  a los datos persistentes que 
+se requiren para el correcto fucionamiento de la aplicación.
+
+Los requirimientos de persistencia de la aplicación son extremadamente austeras. En la implementación
+que se presenta, se almacenan contactos y mensajes.
+
+|
+|
+
+.. figure:: ./dia/database.png
+   :scale: 250%
+   :alt: Fig38
+
+   Fig. :counter:`figure`: Base de datos Zoe
+
+.. page::
+
+
+Arquitectura Global del sistema
+=============================== 
+
+|
+|
+
+.. figure:: ./dia/arquitectura.global.png
+   :width: 1800
+   :alt: Fig39
+
+   Fig. :counter:`figure`: Arquitectura global del sistema
+
+.. page::
+
+
+Máquinas de estado
+==================
+
+Cada uno de los componentes de la aplicación se comporta como una máquina de estados autónoma
+que reacciona a eventos provocados por ella misma o por otras.
+
+A continuación se ilustra el funcionamiento como máquina de estados de cada uno de los módulos.
+
+Core
+----
+
+.. figure:: ./dia/core.sm.png
+   :scale: 250%
+   :alt: Fig39
+
+   Fig. :counter:`figure`: Core SM
+
+.. page::
+
+Console
+--------
+
+.. figure:: ./dia/console.sm.png
+   :scale: 250%
+   :alt: Fig40
+
+   Fig. :counter:`figure`: Console SM
+
+.. page::
+
+Contacts
+--------
+
+.. figure:: ./dia/contacts.sm.png
+   :scale: 250%
+   :alt: Fig41
+
+   Fig. :counter:`figure`: Contacts SM
+
+.. page::
+
+Node
+--------
+
+.. figure:: ./dia/node.sm.png
+   :scale: 200%
+   :alt: Fig42
+
+   Fig. :counter:`figure`: Node SM
+
+.. page::
+
+Patrones de diseño utilizados
+=============================
+
+.. class:: table-cita:
+
+ “Una arquitectura orientada a objetos bien estructurada está llena de patrones. 
+ La calidad de un sistema orientado a objetos se mide por la atención que los diseñadores 
+ han prestado a las colaboraciones entre sus objetos.”
+
+ “Los patrones conducen a arquitecturas más pequeñas, más simples y más comprensibles”
+
+ G. Booch
+
+MVC
+---
+
+.. class:: table-cita:
+
+ "MVC consists of three kinds of objects. The Model is the application object, 
+  the View is its screen presentation, and the Controller defines the way the user 
+  interface reacts to user input. Before MVC, user interface designs tended to lump 
+  these objects together. MVC decouples them to increase flexibility and reuse."
+ 
+[Design Patterns]: Elements of Reusable Object-Oriented Software (ISBN 0-201-63361-2)
+
+Se trata de un patrón estructural. 
+
+Este trabajo desacopla la lógica del almacenamiento y de la representación gráfica.
+De hecho, en esta versión no se distribuye ningún GUI y se delega la construcción de 
+estos a terceros. 
+
+|
+
+.. figure:: ./dia/patron.mvc.png
+   :scale: 200%
+   :alt: Fig42
+
+   Fig. :counter:`figure`: Patrón MVC
+
+.. page::
+
+Facade
+------
+
+Facada es un patrón estructural que provee un único interfaz unificado y simplificado a
+interfaces internos en el sistema. Define un interface de nivel superior que hace más fácil
+la utilización del sistema.
+
+Node se ajusta al patrón de diseño Facade, puesto que su tarea es, principalmente,
+exponer una capa simplificada de las funcionalidades más internas del sistema.
+
+.. class:: table-cita:
+
+  "The facade pattern is ideal when working with a large number of interdependent classes, 
+  or with classes that require the use of multiple methods, particularly when they are 
+  complicated to use or difficult to understand. The facade class is a "wrapper" that contains 
+  a set of members that are easily understood and simple to use. These members access the 
+  subsystem on behalf of the facade user, hiding the implementation details. [#facade]_"
+
+.. [#facade] http://www.blackwasp.co.uk/Facade.aspx
+
+.. figure:: ./dia/patron.node.png
+   :scale: 300%
+   :alt: Fig43
+
+   Fig. :counter:`figure`: Patrón Facade de Node
+
+.. page::
+
+Servidor de actividades
+-----------------------
+
+- Nombre: Servidor de actividades
+- Tipo: Comportamiento
+- Intención: Evitar problemas inherentes a los threads. Proporcionar asincronía.
+- Aplicación: Colaboración en sistemas multithread.
+
+La utilización de este patrón evita que el código de un módulo tenga que ejecutar código
+de otro módulo con su propio "hilo de vida". 
+
+En este patrón, en lugar de que, desde un módulo, se ejecuten métodos públicos de otro
+módulo, se encola en el segundo una actividad síncrona o asíncrona. El módulo que tiene
+la actividad encolada, la ejecuta en su propio hilo, evitando problemas de "racings"
+entre hilos.
+
+Adicionalmente, proporciona asincronía ya que el servidor de activades puede, opcionalmente,
+invocar un callback del módulo solicitante. 
+
+
+|
+|
+|
+
+.. figure:: ./dia/patron.tserver.png
+   :scale: 300%
+   :alt: Fig44
+
+   Fig. :counter:`figure`: Patrón Servidor de Actividades
+
+.. page::
+
+Código de ejemplo usando el patrón Servidor de Actividades:
+
+|
+|
+|
+
+ .. code-block:: python
+
+    class A(tserver.TServer):
+
+      ...
+
+      def time_wasting_method(self, **kw):
+          time.sleep(84600)
+
+      def quick_callback(self, **kw)
+          self.activity(method=self.time_wasting_method, **kw)
+
+      def some_method(self, **kw):
+	  who = kw.get('who')
+          who.activity(method=who.do_b_things, callback=self.quick_callback)
+
+    class B(tserver.TServer):
+
+      ...
+
+      def do_b_things(self, **kw):
+          ...
+          # do hard work
+          ...
+    
+     if __name__ == "__main__":
+  
+        a = A()
+        b = B()
+
+        a.some_method(who=b)
+        a.do_otherthing()
+
+|
+
+Publicador/Subscriptor
+----------------------
+
+También llamado Observer [#observer]_, el patrón Publicador/Subscriptor facilita que las partes 
+del sistema estén desacopladas y que las cosas simplemente "pasen".
+
+.. [#observer] http://es.davidhorat.com/publicaciones/articulos/patrones/observador/
+
+El core de la aplicación despliega un Publicador al que se realizan subscripciones. Estas
+subscripciones incluyen:
+
+- Quién se subscribe.
+- Regular Expresion a la que se subscribe.
+- Callback a llamar.
+
+Ejemplo
+
+.. code-block:: python
+
+ self.subscribe('net/new_message/*', self._do_new_message)
+
+En este caso, se trata de una subscripción para que cuando cualquiera publique un mensaje
+que cumpla la regular 'net/new_message/* se llame al callback _do_new_message.
+
+Como ya se ha indicado, el publicador asertará si el callback tarda demasiado, por lo que
+normalmente, ese callback debe crear una actividad nueva en el objeto llamado.
+
+Para evitar mal uso del subscriptor, incluye un control de tiempo de manera que el callback
+llamado no puede durar más de unos pocos milisegundos.
+
+Para completarlo, en cualquier lugar del sistema, se pueden pegar "gritos" que puedan ser
+de interés para alguien.
+
+Cada vez que alguien publica algo, el publicador comprueba que subscriptores tienen subscripciones
+con expresiones regulares que se ajusten a la publicación y llama a sus callbacks.
+
+.. code-block:: python
+
+ self.publish('net/new_message/darth.vather@gmail.com', **msg)
+
+Cualquiera que se haya subscrito a net/new_message/* o net/new_message/dart*, o con cualquiera
+otra expresión regular que haga "match", será invovado al callback de su subscripción con todo
+el contenido del mensaje. En nuestro caso, el método _do_new_message del subscriptor sería
+llamado con el contido del mensaje.
+
+Esta es una manera extremadamente sencilla y eficiente de que partes del sistema "se enteren"
+de cosas que pasan.
+
+|
+
+.. figure:: ./dia/patron.publicador.png
+   :scale: 300%
+   :alt: Fig45
+
+   Fig. :counter:`figure`: Patrón Publicador/Subscriptor
+
+
+Referencias:
+
+- http://siul02.si.ehu.es/~alfredo/iso/06Patrones.pdf
+- http://hillside.net/patterns/
+- Design Patterns: Elements of Reusable Object-Oriented Software (ISBN 0-201-63361-2)
+
+.. page::
+
+Algoritmos funcionales principales
+==================================
+
+Invitar Contacto
+----------------
+
+|
+|
+|
+
+.. figure:: ./dia/invitar.contacto.png
+   :scale: 200%
+   :alt: Fig46
+
+   Fig. :counter:`figure`: Diagrama de Actividades Invitar Contacto.
+
+.. page::
+
+Aceptar Contacto
+----------------
+
+|
+|
+|
+
+.. figure:: ./dia/aceptar.contacto.png
+   :scale: 200%
+   :alt: Fig47
+
+   Fig. :counter:`figure`: Diagrama de Actividades Aceptar Contacto.
+
+.. page::
+
+Mensajes
+--------
+
+|
+|
+
+.. figure:: ./dia/mensajes.png
+   :width: 1800 
+   :alt: Fig48
+
+   Fig. :counter:`figure`: Diagrama de Actividades Mensajes
+
+Algoritmos no funcionales principales
+=====================================
+
+TServer
+-------
+
+.. figure:: ./dia/tserver.png
+   :width: 800 
+   :alt: Fig49
+
+   Fig. :counter:`figure`: Diagrama de Actividades de todos los TServers
+
+|
+|
+
+.. figure:: ./dia/tserver.class.png
+   :width: 1000 
+   :alt: Fig50
+
+   Fig. :counter:`figure`: Diagrama de clase de TServer
+
+
+Publisher
+---------
+
+|
+|
+
+.. figure:: ./dia/publisher.png
+   :width: 1000 
+   :alt: Fig51
+
+   Fig. :counter:`figure`: Diagrama Actividades de Publisher
+
+.. page::
+
+Encriptación RSA
+----------------
+
+En un sistema de comunicaciones privado las comunicacione deben ser privadas.
+
+Esto no sólo significa que los mensajes deben ser P2P. Estos tienen que ir
+encriptados de forma que si un tercero intercepta los mensajes mediante una
+técnica "Man in the middle" [#man_middle]_ , o suplantando identidad de uno
+de los extremos, no pueda entender los mensajes.
+
+.. [#man_middle] `Man in the middle attack <http://es.wikipedia.org/wiki/Ataque_Man-in-the-middle>`
+
+En ZOE se utiliza un ancriptación RSA [#rsa]_ de 512 bits
+
+Funcionamiento de claves asimétricas RSA:
+
+- Cada usuario tiene un par de claves: 
+
+ - una privada que sólo el conoce
+ - una pública, que deben conocer los usuarios con los que quiera comunicarse.
+
+- Si A encripta con su clave privada, sólo aquellos que tengan la clave pública podrán
+  leerlo y tener garantía de que A generó el mensaje. Sin embargo, A no tiene garantía
+  de que su clave pública, proporcionada a sus contactos, no llegue a terceros.
+
+- Si A encripta con la clave pública de B, sólo B podrá interpretar el mensaje, pero
+  puesto que B no tiene control sobre cual es la propagación de su clave pública,
+  no puede tener garantía de que A fue quien generó el mensaje.
+
+Solución:
+
+- A encripta el mensaje con la clave pública de B. Sólo B podrá desencriptar el mensaje.
+- A firma el mensaje con su clave privada. Cuando B desencripte el mensaje, podrá
+  utilizar la clave pública de A para comprobar la firma.
+
+Si C encriptara el mensaje con la clave pública de B haciéndose pasar por A, cuando
+B intente comprobar la firma con la clave pública de A, fallará, quedando garantizado
+el origen del mensaje en caso de éxito.
+
+.. [#rsa] `RSA rfc-3447 <http://tools.ietf.org/pdf/rfc3447.pdf>`
+
+.. figure:: uml/images/encrypt.png
+   :width: 1000 
+   :alt: Fig52
+
+   Fig. :counter:`figure`: Encriptación RSA
+
+.. page::
+
+Discover/Punch  
+--------------
+
+.. figure:: ./uml/images/punching.png
+   :width: 1800
+   :alt: Fig52
+
+   Fig. :counter:`figure`: Punching
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

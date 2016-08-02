@@ -1,0 +1,31 @@
+01 >> cnn@cnn ~/zoe $ ./zoe.py --config nodob.cfg
+02 >> Starting Zoe
+03 >> Using nodob.cfg config file
+04 >> Not valid udp_port in section General
+05 >> UDP listening on port 34982
+06 >> New Peer B ('192.168.4.130', 34982)
+02 >> New Peer presenter ('82.165.XXX.XXX', 8888)
+02 >> SqliteStorage connection created in 0.003 seconds
+02 >> TelnetConsole is at localhost:6668
+02 >> Loaded plugin sample
+07 >> RSA ok
+08 >> Starting telnet console from 127.0.0.1:56428
+09 >> New Peer presenter@presenter.com ('82.165.XXX.XXX', 8888)
+10 >> CALL received from presenter@presenter.com for A
+11 >> Starting Puncher for A
+12 >> Sample Plugin: New peer ('82.165.XXX.XXX', 8888) presenter@presenter.com
+13 >> New Peer A ('31.4.51.161', 57438)
+14 >> Sample Plugin: New peer ('31.4.51.161', 57438) A
+15 >> Ended Puncher for A [Success]
+16 >> New message from A: Hi !! I want you to be my contact !!
+17 >> Sample Plugin: New message from A : Hi !! I want you to be my contact !!
+18 >> New invitation received from A
+19 >> A accepted invitation
+20 >> Recibido ACK de A [98e5f24a12e311e3a3a978dd08e73185]
+21 >> New message from A: Invitación aceptada !!
+22 >> Sample Plugin: New message from A : Invitación aceptada !!
+23 >> Recibido ACK de A [abedc93012e311e3a3a978dd08e73185]
+24 >> New message from A: Prueba encriptada con RSA
+25 >> Sample Plugin: New message from A : Prueba encriptada con RSA
+26 >> Recibido ACK de A [c24a322c12e311e3a3a978dd08e73185]
+

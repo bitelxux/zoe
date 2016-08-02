@@ -1,0 +1,6 @@
+01 >> 2013-09-01 10:50:29,330 INFO Sample Plugin: New peer ('82.165.XXX.XXX', 8888) presenter@presenter.com
+02 >> 2013-09-01 10:50:29,438 INFO Sample Plugin: New peer ('80.59.0.177', 10776) B
+03 >> 2013-09-01 10:50:48,333 INFO Sample Plugin: New message from B : Contact invitation accepted !!
+04 >> 2013-09-01 10:51:20,261 INFO Sample Plugin: New message from B : Ya lo ví !! Gracias !!
+05 >> 2013-09-01 10:51:57,776 INFO Sample Plugin: New message from B : Recibido. Esta respuesta tambien RSA
+

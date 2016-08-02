@@ -1,0 +1,38 @@
+01 >> cnn@trancos ~/zoe $ rlwrap telnet localhost 6666
+      Trying 127.0.0.1...
+      Connected to localhost.
+      Escape character is '^]'.
+      ***********************************************************
+      Wellcome to zoe console. cnn 2013
+      ---------------------------------------------
+
+      TIP: write 'help' for help
+      TIP: in linux, if you use 'rlwrap telnet <host> <port>',
+           you will have arrows history in your telnet session !!
+
+      Enjoy !!
+      ***********************************************************
+      Available commands. Type 'help <command>' for specific help.
+
+      ** info
+      ** quit
+      ** sample
+      ** contact
+      ** help
+      ** sql
+      ** msg
+      ** login
+      ** who
+      ** stop
+02>>  zoe@>>login foo
+      You are now logged !! Enjoy !!
+03>>  zoe@>>msg send B hola !!
+      Error: Can't send to not contact or not accepted contact B
+04>>  zoe@>>contact invite B
+      OK: Invitation enqueued to B
+05>>  zoe@>>msg send B Invitación aceptada !!
+      OK: Message enqueued for delivering
+06->> zoe@>>msg send crypted B Prueba encriptada con RSA
+      OK: Message enqueued for delivering
+      zoe@>>
+
