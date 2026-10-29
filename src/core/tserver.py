@@ -99,8 +99,8 @@ class TServer(utils.ZThread):
         '''
         Removes timer
         '''
-        for timer, _ in self.timers.items():
-            del(self.timers[timer])
+        for timer in list(self.timers.keys()):
+            del self.timers[timer]
 
     def attend_timers(self):
         '''
@@ -160,9 +160,9 @@ class TServer(utils.ZThread):
                 lapse = time.time() -t
 
                 if lapse > 2.0:
-                    log.warning("TSERVER [%0.3f] %s.%s [%s] (%s)" %(lapse, activity['priority'], 
-                                                                 activity['method'].im_class.__name__, 
-                                                                 activity['method'].im_func.__name__, 
+                    log.warning("TSERVER [%0.3f] %s.%s [%s] (%s)" %(lapse, activity['priority'],
+                                                                 activity['method'].__self__.__class__.__name__,
+                                                                 activity['method'].__func__.__name__,
                                                                  activity['kw']))
 
                 if activity['type'] == 'blocking':
@@ -173,7 +173,7 @@ class TServer(utils.ZThread):
                 elif activity['callback']:
                     activity['callback'](result=result, lapse=lapse)
 
-        except Exception, why:
+        except Exception as why:
             log.error("OOOOPS tserver.run %s: %s" % (self.name, why) )
             log.error(traceback.format_exc())
 
@@ -220,7 +220,7 @@ class TServer(utils.ZThread):
             if self.done_activities.get(activity_id):
                 self.done_activities.pop(activity_id) 
 
-        except Exception, why:
+        except Exception as why:
             log.error('OOOPS tserver.wait_activity %s: %s' % (self.name, why) )
 
         return None, time.time()-t
@@ -304,7 +304,7 @@ class TServer(utils.ZThread):
             self.activities[activity['priority']].append(activity)
             self.lock.release()
 
-        except Exception, why:
+        except Exception as why:
             log.error('OOOPS tserver.activity %s:%s' % (self.name, why) )
 
         return activity['id']
@@ -382,7 +382,7 @@ class TServer(utils.ZThread):
                 self.l_counter += 1
             else:
                 log.error( 'Oops incorrect queue: %s' %(_queue) )
-        except Exception, why:
+        except Exception as why:
             log.error('OOOOPS tserver.popactivity %s:%s' % (self.name, why))
         finally:
             pass

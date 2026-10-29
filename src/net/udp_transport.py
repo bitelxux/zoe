@@ -67,7 +67,7 @@ class RX_thread(utils.ZThread, zobject.ZObject):
         self.running = True
         
         # send a packet to get port assigned
-        self.wakeup.sendto('foo', ('localhost', 2222))
+        self.wakeup.sendto(b'foo', ('localhost', 2222))
         self.wakeup_port = self.wakeup.getsockname()[1]
         
         while self.running:
@@ -80,7 +80,7 @@ class RX_thread(utils.ZThread, zobject.ZObject):
                     raw, address = self.fd.recvfrom(0xFFFF)
                     #log.info(" <<<<<<<<<<<<<< recibido de %s" % str(address))
                     self.caller.attend(raw=raw, address=address)
-            except Exception, why:
+            except Exception as why:
                 log.warning("udp_transport %s" % why)
                 
                 
@@ -88,7 +88,7 @@ class RX_thread(utils.ZThread, zobject.ZObject):
         '''
         Specific stop tasks
         '''
-        self.wakeup.sendto('wakeup', ('localhost', self.wakeup_port))
+        self.wakeup.sendto(b'wakeup', ('localhost', self.wakeup_port))
         utils.ZThread.stop(self)
         
 class UDPPtransport(transport.Transport):
@@ -148,7 +148,7 @@ class UDPPtransport(transport.Transport):
         if self.fd_port:
             self.fd.bind(('0.0.0.0', self.fd_port))
         else:
-            self.fd.sendto('dummy', ('localhost', 2222))
+            self.fd.sendto(b'dummy', ('localhost', 2222))
             self.fd_port = self.fd.getsockname()[1]
             
         log.info("UDP listening on port %d" % self.fd_port )

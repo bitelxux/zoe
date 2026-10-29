@@ -29,7 +29,7 @@ along with Zoe P2P.  If not, see <http://www.gnu.org/licenses/>.
 
 #Oops there is a problem with cjson encodes and RSA !!
 #import cjson
-import cPickle
+import pickle
 
 from utils import utils
 from core import zobject
@@ -94,7 +94,7 @@ class Zoe(Protocol):
         msg['signature'] = kw.get('signature')
         msg['msg_type'] = kw.get('msg_type')
         msg['encrypt'] = kw.get('encrypt', 0)
-        msg = cPickle.dumps(msg)
+        msg = pickle.dumps(msg)
         return msg
     
     def decode(self, msg):
@@ -102,7 +102,7 @@ class Zoe(Protocol):
         Decodes Zoe protocol message
         '''
         #msg = cjson.decode(msg)
-        msg = cPickle.loads(msg)
+        msg = pickle.loads(msg)
         return msg
         
         

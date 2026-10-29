@@ -29,7 +29,7 @@ along with Zoe P2P.  If not, see <http://www.gnu.org/licenses/>.
 
 from utils import utils
 
-import storage
+from storage import storage
 import sqlite3
 import time
 
@@ -155,7 +155,7 @@ class SqliteDB(storage.Storage):
 
         try:
             self.db.commit()
-        except Exception, why:
+        except Exception as why:
             log.warning('Could not commit !!' % why)
     
     def execute(self, **kw):
@@ -174,7 +174,7 @@ class SqliteDB(storage.Storage):
             result = self.cursor.fetchall()
             num = len(result) if len(result) else num
             self.commit()
-        except Exception, why:
+        except Exception as why:
             log.warning("sqlite storage: %s" % why )
             
         return {'rows':result, 'affected':num}
@@ -387,14 +387,14 @@ class SqliteDB(storage.Storage):
         if not contact:
             text = "Contact %s does not exist" % email
             log.warning(text)
-            print text
-            return 
-        
+            print(text)
+            return
+
         if not delete_all:
             if not contact.get('ackd'):
                 text = "%s is allready disabled" % email
                 log.warning(text)
-                print text
+                print(text)
                 return 
             sql = "UPDATE contacts SET ackd=0 WHERE email = '%s'" % email
             self.execute(sql=sql)
@@ -443,9 +443,9 @@ class SqliteDB(storage.Storage):
         if not msg:
             text = "message %s does not exist" % mid
             log.warning(text)
-            print text
-            return 
-        
+            print(text)
+            return
+
         sql = "DELETE FROM messages WHERE id = '%s'" % mid
         self.execute(sql=sql)
             

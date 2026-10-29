@@ -29,6 +29,7 @@ import unittest
 import pytest
 import sys
 import os
+from unittest.mock import patch, MagicMock
 
 basepath = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
 
@@ -56,15 +57,15 @@ class suite_utils(unittest.TestCase):  #
 
     @pytest.mark.T1
     def test_000_singleton(self):
-        
-        class foo:
-            __metaclass__ = self.utils.Singleton
+
+        Singleton = self.utils.Singleton
+        class foo(metaclass=Singleton):
             def __init__(self):
                 dummy = 1
-            
+
         c1 = foo()
         c2 = foo()
-        
+
         self.assertTrue(c1 is c2)
         
     @pytest.mark.T1
@@ -79,27 +80,42 @@ class suite_utils(unittest.TestCase):  #
         
     @pytest.mark.T1
     def test_0020_Mailer(self):
-        
-        result = self.utils.sendmail(_server='smtp.gmail.com',
-                                     _port = 587,
-                                     _user = 'darz.vather@gmail.com',
-                                      _password = '1dvd=6divx',
-                                     _to='bitelxux@gmail.com', 
-                                     _subject='test_0020_Mailer at jenkins',
-                                     _body='body')
-        
-        self.assertTrue(result)
+        import smtplib
 
-        # this will fail as password is wrong
-        result = self.utils.sendmail(_server='smtp.gmail.com',
-                                     _port = 587,
-                                     _user = 'darz.vather@gmail.com',
-                                     _password = 'wrongpass',
-                                     _to='bitelxux@gmail.com', 
-                                     _subject='Failed test',
-                                     _body='body')
-        
-        self.assertFalse(result)
+        # success: SMTP works fine
+        with patch('utils.utils.smtplib.SMTP'):
+            result = self.utils.sendmail(_server='smtp.gmail.com',
+                                         _port=587,
+                                         _user='user@gmail.com',
+                                         _password='pass',
+                                         _to='to@gmail.com',
+                                         _subject='subject',
+                                         _body='body')
+            self.assertTrue(result)
+
+        # failure: SMTP raises on login (bad credentials)
+        with patch('utils.utils.smtplib.SMTP') as mock_smtp:
+            mock_smtp.return_value.login.side_effect = smtplib.SMTPAuthenticationError(535, b'Bad credentials')
+            result = self.utils.sendmail(_server='smtp.gmail.com',
+                                         _port=587,
+                                         _user='user@gmail.com',
+                                         _password='wrongpass',
+                                         _to='to@gmail.com',
+                                         _subject='subject',
+                                         _body='body')
+            self.assertFalse(result)
+
+        # failure: cannot connect to server
+        with patch('utils.utils.smtplib.SMTP') as mock_smtp:
+            mock_smtp.side_effect = ConnectionRefusedError('Connection refused')
+            result = self.utils.sendmail(_server='invalid.host',
+                                         _port=587,
+                                         _user='user@gmail.com',
+                                         _password='pass',
+                                         _to='to@gmail.com',
+                                         _subject='subject',
+                                         _body='body')
+            self.assertFalse(result)
         
         
     @pytest.mark.T1
@@ -309,7 +325,7 @@ class suite_rsa_utils(unittest.TestCase):  #
         sys.path.append(basepath)
         
         file_name = os.path.join(os.path.dirname(__file__),'config.cfg')
-        print ">>><>>>> file_name = %s" % file_name
+        print(">>><>>>> file_name = %s" % file_name)
         
         from utils import utils
         config = utils.ConfigManager(name='config', config_file=file_name)

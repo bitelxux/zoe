@@ -26,5 +26,5 @@ You should have received a copy of the GNU General Public License
 along with Zoe P2P.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import utils
-#import mlogger
+from . import utils
+#from . import mlogger

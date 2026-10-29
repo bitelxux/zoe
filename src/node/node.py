@@ -181,7 +181,7 @@ class Node(tserver.TServer, zobject.ZObject):
             if not contact or not contact.get('ackd'):
                 text = "Can't send to not contact or not accepted contact %s" % recipient
                 log.warning(text)
-                print text
+                print(text)
                 return False, text
           
         data = {}

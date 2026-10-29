@@ -103,12 +103,13 @@ class Router(tserver.TServer, zobject.ZObject):
         # pylint
         dummy = kw
 
-        for k, remote in self.remotes.items():
-            if remote['volatile'] and time.time() - remote['ts'] > 120:
-                self.remotes.pop(k)
-                # pylint: disable-msg = E1101
-                self.publish(what='router/lostpeer', remote=remote)
-                log.info("Lost peer %s" % k)
+        to_remove = [k for k, remote in self.remotes.items()
+                     if remote['volatile'] and time.time() - remote['ts'] > 120]
+        for k in to_remove:
+            remote = self.remotes.pop(k)
+            # pylint: disable-msg = E1101
+            self.publish(what='router/lostpeer', remote=remote)
+            log.info("Lost peer %s" % k)
         
     def stop(self):
         '''

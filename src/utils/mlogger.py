@@ -28,11 +28,11 @@ along with Zoe P2P.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import logging
-import __builtin__
+import builtins
 
 assert False # not used
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', filename='zoe.log', level=logging.DEBUG)
 
-__builtin__.log = logging.getLogger()
+builtins.log = logging.getLogger()
 

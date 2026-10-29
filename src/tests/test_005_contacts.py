@@ -40,7 +40,7 @@ class suite_contacts(unittest.TestCase):  #
     counter = 0
     
     def setUp(self):
-        print ">>> rm -f %s/tests/*.db" % basepath
+        os.system("rm -f %s/tests/*.db %s/*.db ./*.db" % (basepath, basepath))
         sys.path.append(basepath)
         import core.core
         import time

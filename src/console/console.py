@@ -28,14 +28,12 @@ along with Zoe P2P.  If not, see <http://www.gnu.org/licenses/>.
 
 import code
 import sys
-import StringIO
+from io import StringIO, BytesIO
 import re
 import time
 
 import socket
 import select
-
-import utils
 
 from utils import utils
 log = utils.log
@@ -52,14 +50,15 @@ class myInteractiveInterpreter( code.InteractiveInterpreter ):
         self._write = _write
 
     def runcode(self, _code):
-        _buffer = StringIO.StringIO( )
+        _buffer = StringIO()
         sys.stdout = _buffer
         try:
             code.InteractiveInterpreter.runcode( self, _code )
         finally:
             sys.stdout = sys.__stdout__
         _buffer.seek( 0 )
-        map( self.write, _buffer.readlines( ) )
+        for line in _buffer.readlines():
+            self.write(line)
 
     def write(self, data):
         self._write( data.replace( '\n^', '^' ).replace( '\n', '\r\n' ) )
@@ -89,20 +88,20 @@ class Console(utils.ZThread):
     '''
 
     start_time = time.time()
-    
+
     helpers = {}
     running = False
     interpreter = None
     ok = False
     locked = True
-    
+
     logged = False
     uptime = None
-    
+
     doc = {}
-    
+
     public_commands = []
-    
+
     # pylint
     core = None
 
@@ -118,7 +117,7 @@ class Console(utils.ZThread):
                           'stop':{'reg':reg_stop, 'func':self.helper_stop, 'info':'Stops node', 'help':self.stop_help},
                           'quit':{'reg':reg_quit, 'func':self.helper_quit, 'info':'Quit this console', 'help':self.quit_help},
                           'help':{'reg':reg_help, 'func':self.helper_help, 'info':'Print this help', 'help':self.help_help},
-                          'info':{'reg':reg_info, 'func':self.helper_info, 'info':'Shows info', 'help':self.info_help},                          
+                          'info':{'reg':reg_info, 'func':self.helper_info, 'info':'Shows info', 'help':self.info_help},
                        }
 
         for command, data in self.helpers.items():
@@ -126,95 +125,95 @@ class Console(utils.ZThread):
 
         self.interpreter = myInteractiveInterpreter(self.write, locals=locals())
 
-        
+
     def info_help(self):
-        
+
         '''
         Shows info help
         '''
-        
+
         help_lines = [
             "info",
             "",
             "Shows some stats about ejetution."
             ]
-        
-        
+
+
         self.write("")
         for line in help_lines:
             self.write(line)
-        
-        
+
+
     def quit_help(self):
-        
+
         '''
         Shows quit help
         '''
-        
+
         help_lines = [
             "quit",
             "",
             "Quits console and returns to prompt."
             ]
-        
-        
+
+
         self.write("")
         for line in help_lines:
             self.write(line)
-        
-        
+
+
     def help_help(self):
-        
+
         '''
         Shows help help
         '''
-        
+
         help_lines = [
             "help [command]",
             "",
             "Shows available commands."
             ]
-        
-        
+
+
         self.write("")
         for line in help_lines:
             self.write(line)
-        
-        
+
+
     def stop_help(self):
-        
+
         '''
         Shows stop help
         '''
-        
+
         help_lines = [
             "stop",
             "",
             "Stops node execution."
             ]
-        
+
         self.write("")
         for line in help_lines:
             self.write(line)
-        
-        
+
+
     def login_help(self):
-        
+
         '''
         Shows login help
         '''
-        
+
         help_lines = [
             "login <password>",
             "",
             "Enables all console funcionality to user."
             ]
-        
-        
+
+
         self.write("")
         for line in help_lines:
             self.write(line)
-        
+
     def unlock_python(self):
         '''
         Brings access to python console
@@ -242,20 +241,17 @@ class Console(utils.ZThread):
 
         self.running = True
         while self.running:
-            
+
             utils.ZThread.run(self)
-            
-            #log.info("Console running")
-            # pylint: disable-msg = E1101
+
             line = self.read('%s@>>' % self.name)
             if line == '':
                 continue
             try:
                 self.attend(line)
-            except Exception, why:
-                log.error("Oops: %s" % why )
+            except Exception as why:
+                log.error("Oops: %s" % why)
 
-        #print "Have a nice day. Bye"
         log.info("Console stopped")
 
     def firewall_allows(self, line):
@@ -278,68 +274,60 @@ class Console(utils.ZThread):
     # >> helpers
     ##########################################################################
 
-    #Don't call directly !! when helper is reached, regular has allready been validated ...
-    #REVIEW: check regular again ?? or just call helper and check regular just in helper and not before
-
     def do_helper(self, helper, **kw):
         '''
         Executes console action
         '''
-        
+
         if self.logged is False and kw.get('cmd') not in self.public_commands:
             self.write('oops !! Not logged !!')
         else:
             try:
                 helper(**kw)
-            except Exception, why:
-                self.write("Error: %s" % why )
+            except Exception as why:
+                self.write("Error: %s" % why)
 
-        
+
     def helper_uptime(self, **kw):
         '''
         helper
         '''
-        #pylint 
         dummy = kw
 
         self.write(utils.dhms_time(time.time() - self.start_time))
-        
+
     def helper_info(self, **kw):
         '''
         helper
         '''
-        #pylint 
         dummy = kw
 
         self.write( "Overwrite !")
-                
+
     def helper_reset(self, **kw):
         '''
         helper
         '''
-        #pylint 
         dummy = kw
-        
+
         self.write( "Overwrite !")
-        
+
     def helper_reboot(self, **kw):
         '''
         helper
         '''
-        #pylint 
         dummy = kw
 
         self.write( "Overwrite!")
-        
+
     def helper_stop(self, **kw):
         '''
         helper
         '''
-        #pylint 
         dummy = kw
-        
+
         self.write( "Overwrite !")
-                
+
     def helper_quit(self, **kw):
         '''
         Quits console
@@ -415,7 +403,7 @@ class Console(utils.ZThread):
             reg = self.helpers[cmd]['reg']
             parsed = reg.match(line)
             if parsed:
-                
+
                 self.do_helper(self.helpers[cmd]['func'], **parsed.groupdict())
                 return
             else:
@@ -433,9 +421,8 @@ class Console(utils.ZThread):
             else:
                 # when single var is written, ej a, interpreter doesn't print it's value.
                 # prefix with "print" to have normal python console behaviour
-                # TODO: this is no much robust ... it's a big shit ... improve
                 if '=' not in line and '<' not in line and '>' not in line and len(line.split()) == 1:
-                    line = 'print %s' % line
+                    line = 'print(%s)' % line
 
                 self.interpreter.runcode(line)
 
@@ -443,14 +430,14 @@ class Console(utils.ZThread):
         '''
         default read method. overwrite for other consoles
         '''
-        line = raw_input(prompt)
+        line = input(prompt)
         return line
 
     def write(self, output):
         '''
         default write method. overwrite for other consoles
         '''
-        print output
+        print(output)
 
     def stop(self):
         '''
@@ -465,9 +452,8 @@ class Console(utils.ZThread):
 
         self.write("Available commands. Type 'help <command>' for specific help.")
         self.write("")
-        
+
         for key, _ in self.helpers.items():
-            #self.write("** %s '%s'-> %s" %(key, value['sintax'], value['help']))
             self.write( "** %s" % key)
 
 
@@ -484,15 +470,15 @@ class TelnetConsoleProvider(utils.ZThread):
     port = None
     running = False
     klass = None
-    
+
     def __init__(self, *args, **kw):
-        
+
         utils.ZThread.__init__(self, *args, **kw)
-        
+
         self.core = kw['core']
         self.klass = kw.get('klass')
-        self.name = kw.get('name', '**')        
-                
+        self.name = kw.get('name', '**')
+
     def run(self):
 
         '''
@@ -500,26 +486,24 @@ class TelnetConsoleProvider(utils.ZThread):
         '''
 
         self.port = self.core.configManager.get_int('Console', 'port')
-        
+
         if not self.port:
             log.error("Console could not be started !!")
             return
-        
+
         self.running = True
-        
+
         self.listener = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
         self.listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         try:
             self.listener.bind(('0.0.0.0', self.port))
             self.listener.listen(1)
-            #self.is_ok = True
             log.info("TelnetConsole is at localhost:%d" % self.port )
-        except Exception, why:
+        except Exception as why:
             log.error('Telnet console could not be binded to port %d [%s]' % (self.port, why) )
-        
+
         while self.running:
-            #log.info("TenletConsole running")
             utils.ZThread.run(self)
             try:
                 _rx, _, _ = select.select([self.listener], [], [], 1.0)
@@ -530,17 +514,17 @@ class TelnetConsoleProvider(utils.ZThread):
                     self.consoles.append(console)
                     console.hello()
                     console.start()
-            except Exception, why:
-                dummy = 1
+            except Exception:
+                pass
 
         log.info("TelnetConsole stopped")
-                
+
     def purge_connection(self, _socket):
         '''
         Removes connection
         '''
         self.connections.pop(_socket)
-        
+
     def stop(self):
         '''
         stop specific tasks
@@ -548,19 +532,19 @@ class TelnetConsoleProvider(utils.ZThread):
         self.running = False
         try:
             self.listener.close()
-        except Exception, why:
+        except Exception as why:
             log.warning("listener close fail: %s" % why)
         for cons in self.consoles:
             cons.stop()
-        
-            
+
+
 class TelnetConsole(Console):
     '''
     Telnet console
     '''
 
     client_addr = None
-    client = None 
+    client = None
     buffer = None
     port = None
     name = None
@@ -568,9 +552,9 @@ class TelnetConsole(Console):
     core = None
 
     reg_who = re.compile(r"(?P<cmd>who)", re.DOTALL | re.MULTILINE)
-    
+
     def __init__(self, *args, **kw):
-        
+
         self.core = kw['core']
         self.parent = kw.get('parent')
         self.name = kw.get('name', '**')
@@ -578,12 +562,12 @@ class TelnetConsole(Console):
         self.client_addr = self.client[1]
         self.client = self.client[0]
         self.logged_date = time.time()
-        self.buffer = StringIO.StringIO()
-        
+        self.buffer = BytesIO()
+
         Console.__init__(self, *args, **kw )
-        
+
         log.info("Starting telnet console from %s:%s" % (self.client_addr[0], self.client_addr[1]))
-        
+
         helpers = {'who':{'reg':self.reg_who, 'func':self.helper_who, 'sintax':'who', 'help':'Show current connections'},}
         self.public_commands.extend(['who'])
         self.helpers.update(helpers)
@@ -595,16 +579,16 @@ class TelnetConsole(Console):
         '''
 
         assert kw.get('cmd') == 'who'
-        
+
         for conn in self.parent.connections.values():
             if conn[0] == self.client_addr:
                 preffix = "(this)"
             else:
                 preffix = ""
-            fecha = utils.datetime_2string(conn[1])
+            fecha = utils.timestamp_2string(conn[1])
             text = "%s from %s:%s %s" % (fecha, conn[0][0], conn[0][1], preffix)
             self.write(text)
-            
+
     def stop(self):
         self.running = False
         if self.client is not None:
@@ -627,7 +611,6 @@ class TelnetConsole(Console):
                     "Enjoy !!"
                )
 
-        # Just for beauty and avoid writting #####.....
         size = 0
         for line in text:
             size = max(size, len(line))
@@ -636,7 +619,7 @@ class TelnetConsole(Console):
         for line in text:
             self.write(line)
         self.write('*'*size)
-        
+
         self.print_help()
 
 
@@ -649,34 +632,35 @@ class TelnetConsole(Console):
     def read(self, prompt):
 
         # send pending responses
-        if self.buffer.getvalue() and self.client:
-            self.client.send(self.buffer.getvalue())
+        buf_value = self.buffer.getvalue()
+        if buf_value and self.client:
+            self.client.send(buf_value)
             self.buffer.truncate(0)
-
+            self.buffer.seek(0)
 
         if self.client:
             sockets = [self.client]
-            self.client.send(prompt)
+            self.client.send(prompt.encode('utf-8') if isinstance(prompt, str) else prompt)
         else:
             sockets = []
 
         _rx, _, _ = select.select(sockets, [], [], 99999)
         if _rx:
             raw = self.client.recv(0xffff)
-            if raw == '':
+            if raw == b'':
                 self.client.close()
                 self.client = None
+                return ''
             else:
                 raw = raw[:-2]
-            return raw
-        
+            return raw.decode('utf-8', errors='replace')
+
         return ''
 
     def write(self, output):
 
         try:
-            self.client.send('%s\r\n' % output)
-        except Exception, why:
+            data = ('%s\r\n' % output).encode('utf-8')
+            self.client.send(data)
+        except Exception as why:
             log.info("Could not write to console [%s]" % why)
-
-

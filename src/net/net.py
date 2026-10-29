@@ -35,10 +35,10 @@ import time
 from utils import utils
 from core import tserver
 from core import zobject
-import udp_transport
-import router
-import protocol
-import firewall
+from net import udp_transport
+from net import router
+from net import protocol
+from net import firewall
 
 log = utils.log
 
@@ -378,7 +378,7 @@ class Net(tserver.TServer, zobject.ZObject):
                 try:
                     msg, signature = utils.RSA(config=self.core.configManager).encrypt(msg, to)
                     kw['signature'] = signature
-                except Exception, why:
+                except Exception as why:
                     log.error("OOps !! could not encrypt message %s" % why)
                     return
             

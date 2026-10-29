@@ -30,7 +30,7 @@ import re
 import time
 
 from utils import utils
-import console
+from console import console
 
 log = utils.log
 
@@ -292,8 +292,8 @@ class zoe_console( console.TelnetConsole ):
         else:
             try:
                 helper(**kw)
-            except Exception, why:
-                self.write("Error: %s" % why )        
+            except Exception as why:
+                self.write("Error: %s" % why )
         
     def helper_info(self, **kw):
         uptime = utils.dhms_time(time.time() - self.core.started_at)

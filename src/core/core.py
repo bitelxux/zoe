@@ -31,10 +31,9 @@ along with Zoe P2P.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
 import os
-import imp
-
-#sys.path.append('utils')
-#sys.path.append('core')
+import sys
+import importlib
+import importlib.util
 
 from utils import utils
 from console import console
@@ -43,8 +42,7 @@ from storage import sqlite_db
 from node import node
 from net import net
 from contacts import contacts
-
-import publisher
+from core import publisher
 
 log = utils.log
 
@@ -113,13 +111,20 @@ class Core(utils.ZThread):
             return
 
         for plugin in plugins_list:
+            plugin_dir = os.path.join(plugins_path, plugin)
             try:
-                m = imp.load_module(plugin, *imp.find_module(plugin, [plugins_path]))
+                sys.path.insert(0, plugin_dir)
+                spec = importlib.util.spec_from_file_location(plugin, os.path.join(plugin_dir, '__init__.py'))
+                m = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(m)
                 m.run(core=self)
-                self.plugins[plugin] = m.instance                
+                self.plugins[plugin] = m.instance
                 log.info("Loaded plugin %s" % plugin)
-            except Exception, why:
+            except Exception as why:
                 log.error("Error loading plugin %s: %s" % (plugin, why))
+            finally:
+                if plugin_dir in sys.path:
+                    sys.path.remove(plugin_dir)
 
 
     def load_plugins_from_dir(self):
@@ -132,7 +137,9 @@ class Core(utils.ZThread):
         plugins_path = os.path.join(self.app_path, 'plugins')
         for _, dirnames, _ in os.walk(plugins_path):
             for plugin in dirnames:
-                m = imp.load_module(plugin, *imp.find_module(plugin, [plugins_path]))
+                spec = importlib.util.spec_from_file_location(plugin, os.path.join(plugins_path, plugin, '__init__.py'))
+                m = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(m)
                 m.run(core=self)
                 self.plugins[plugin] = m.instance
                 log.info("Loaded plugin %s" % plugin)
